@@ -94,15 +94,17 @@ struct Chessboard **createChessboard(int x, int y, int MineNum);
 #### 3.定义函数 makeChessboard
 
 ```c
-struct Chessboard **makeChessboard(struct Chessboard **myCBList, int MineNum);
+struct Chessboard **makeChessboard(struct Chessboard **myCBList, int MineNum, int cx, int cy);
 ```
 
 函数功能为返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
 
-| key      |        instruction         |
-| -------- | :------------------------: |
-| myCBList | 传入未初始化的棋盘(已埋雷) |
-| MineNum  |          埋雷总数          |
+| key      |               instruction               |
+| -------- | :-------------------------------------: |
+| myCBList |       传入未初始化的棋盘(已埋雷)        |
+| MineNum  |                埋雷总数                 |
+| cx       | 传入数组的x长度(a\[5\]\[6\]的x为5,y为6) |
+| cy       |             传入数组的y长度             |
 
 | Value      | status | 说明                                  |
 | ---------- | :----: | ------------------------------------- |
