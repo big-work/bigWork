@@ -1,18 +1,35 @@
 #include "chessboard.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
-struct Chessboard** createChessboard(int x, int y, int MineNum)
+Chessboard** createChessboard(int x, int y, int MineNum)
 {
-	struct Chessboard myCB;
-	struct Chessboard** myCBList;
+	//int* num = (int*)malloc(sizeof(int) * 8);
+	Chessboard myCB;
+	Chessboard** myCBList;
 	myCB.flag = 0;
 	myCB.nearbyMineNum = 0;
 	myCB.tagOrNot = 0;
-	myCBList = (struct Chessboard**)malloc(sizeof(struct Chessboard*)*x);
+	myCB.drawOrNot = 0;
+	//printf("%d,%d", sizeof(struct Chessboard*), sizeof(struct Chessboard));
+	if (x == 0 || y == 0) {
+		return NULL;
+	}
+	myCBList = (Chessboard**)malloc(sizeof(Chessboard*) * x);
+	if (myCBList == NULL)
+	{
+		printf("fail to malloc()!\n");
+		return NULL;
+	}
 	for (int i = 0; i < x; i++)
 	{
-		myCBList[i] = (struct Chessboard*)malloc(sizeof(struct Chessboard) * y);
+		myCBList[i] = (Chessboard*)malloc(sizeof(Chessboard) * y);
+		if (myCBList[i] == NULL)
+		{
+			printf("fail to malloc()!\n");
+			return NULL;
+		}
 	}
 	for (int i = 0; i < x; i++) {
 		for (int t = 0; t < y; t++) {
@@ -25,7 +42,7 @@ struct Chessboard** createChessboard(int x, int y, int MineNum)
 	{
 		randNumx = rand() % x;
 		randNumy = rand() % y;
-		if (myCBList[randNumx][randNumy].flag == 1){
+		if (myCBList[randNumx][randNumy].flag == 1) {
 			i--;
 			continue;
 		}

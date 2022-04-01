@@ -1,16 +1,20 @@
-### 第一个星期
+# 作业历程
+
+
+
+## 第一个星期
 
 ---
 
-#### 1.定义结构体 chessboard(棋盘信息)
+### 1.定义结构体 chessboard(棋盘信息)
 
 ```c
-struct Chessboard
+typedef struct
 {
     int  flag;  
     int  nearbyMineNum;
     int  tagOrNot;
-}
+}Chessboard;
 ```
 
 | key           |                 instruction                 |
@@ -19,10 +23,10 @@ struct Chessboard
 | nearbyMineNum | 周边一圈的雷数(默认为0，生成棋盘后自动计算) |
 | tagOrNot      |      在游戏中是否被标记，是为1，否为0       |
 
-#### 2.定义函数 createChessboard
+### 2.构建函数 createChessboard
 
 ```c
-struct Chessboard **createChessboard(int x, int y, int MineNum);
+Chessboard **createChessboard(int x, int y, int MineNum);
 ```
 
 > 二维动态数组的生成方法
@@ -80,15 +84,15 @@ struct Chessboard **createChessboard(int x, int y, int MineNum);
 | y       |     二维数组的长度     |
 | MineNum | 二维数组需要埋下的雷数 |
 
-| Value                        |                            status                            | 说明                                               |
-| ---------------------------- | :----------------------------------------------------------: | -------------------------------------------------- |
-| NULL，printf("...")          | x < 6 \|\| y < 10 \|\| MineNum > x * y - 10 \|\| MineNum < 10 | 棋盘大小或者埋雷个数不合法                         |
-| struct Chessboard **myCBList |                              -                               | 返回一个已经随机埋好雷的结构体chessboard的二维数组 |
+| Value                        | 说明                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| NULL，printf("...")          | 棋盘大小或者埋雷个数不合法（x < 6 \|\|y < 10 \|\|MineNum > x * y - 10 \|\|MineNum < 10） |
+| struct Chessboard **myCBList | 返回一个已经随机埋好雷的结构体chessboard的二维数组           |
 
-#### 3.定义函数 makeChessboard
+### 3.构建函数 makeChessboard
 
 ```c
-struct Chessboard **makeChessboard(struct Chessboard **myCBList, int MineNum, int cx, int cy);
+Chessboard **makeChessboard(Chessboard **myCBList, int MineNum, int cx, int cy);
 ```
 
 函数功能为返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
@@ -100,8 +104,91 @@ struct Chessboard **makeChessboard(struct Chessboard **myCBList, int MineNum, in
 | cx       | 传入数组的x长度(a\[5\]\[6\]的x为5,y为6) |
 | cy       |             传入数组的y长度             |
 
-| Value      | status | 说明                                  |
-| ---------- | :----: | ------------------------------------- |
-| **myCBList |   -    | 返回计算nearbyMineNum后的棋盘         |
-| NULL       |   -    | MineNum的值与传入的棋盘中已埋雷数不符 |
+| Value      | 说明                                  |
+| ---------- | ------------------------------------- |
+| **myCBList | 返回计算nearbyMineNum后的棋盘         |
+| NULL       | MineNum的值与传入的棋盘中已埋雷数不符 |
+
+## 第二个星期
+
+---
+
+### 1.修改结构体 chessboard(棋盘信息)
+
+```c
+typedef struct
+{
+    int  flag;  
+    int  nearbyMineNum;
+    int  tagOrNot;
+    int  drawOrNot;
+}Chessboard;
+```
+
+> 在第一个星期并没有考虑到用户实际操作时需要的各种情况的记录, 为了让结构体能够更好的记录当前棋盘的状况, 我们决定在函数中加入一个新的元素:drawOrNot, 来记录该点是否被玩家翻开。
+
+| key           |                 instruction                 |
+| ------------- | :-----------------------------------------: |
+| flag          |          是否埋有雷, 是为1, 否为0           |
+| nearbyMineNum | 周边一圈的雷数(默认为0, 生成棋盘后自动计算) |
+| tagOrNot      |      在游戏中是否被标记, 是为1, 否为0       |
+| drawOrNot     |        是非被玩家翻开, 是为1, 否为0         |
+
+### 2.构建函数 drawOneChess
+
+```c
+Chessboard **drawOneChess(Chessboard **myCBList, int cx, int cy, int x, int y);
+```
+
+函数功能为翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘并输出错误。
+
+>#### 扫雷翻牌规则介绍：
+>
+>点击一个区域的时候，有三种情况：
+>
+>1. 周围8个格子有雷，也就是这个区域上应该有数字标明，只翻一个
+>2. 中卫8个格子没有雷，该区域没有数字，为空地，向外翻开一个由数字块围成的区域(只有边缘是数字，里面全是空地)
+>3. 该区域为雷，game over~
+
+| key      |               instruction               |
+| -------- | :-------------------------------------: |
+| myCBList |           传入已初始化的棋盘            |
+| cx       | 传入数组的x长度(a\[5\]\[6\]的x为5,y为6) |
+| cy       |             传入数组的y长度             |
+| ｘ       |         需要翻开的格子的ｘ坐标          |
+| ｙ       |         需要翻开的格子的ｙ坐标          |
+
+| Value                     | 说明                               |
+| ------------------------- | ---------------------------------- |
+| **myCBList                | 返回翻开格子后的棋盘               |
+| NULL                      | 翻开的格子中埋有雷（忽略错误处理） |
+| **myCBList，printf("...") | 输出“该格子已被翻开”并返回原棋盘   |
+
+### 3.构建函数 markOneChess
+
+```
+Chessboard **markOneChess(Chessboard **myCBList, int cx, int cy, int x, int y);
+```
+
+函数功能为标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则返回原棋盘并输出错误。
+
+>#### 扫雷标记规则介绍：
+>
+>扫雷的规则就是在避开雷的前提下，标注出所有的雷。
+>
+>扫雷游戏中红旗用于标记已明确的地雷，标志了红旗，就不能按了，要取消才可以。
+
+| key      |               instruction               |
+| -------- | :-------------------------------------: |
+| myCBList |           传入已初始化的棋盘            |
+| cx       | 传入数组的x长度(a\[5\]\[6\]的x为5,y为6) |
+| cy       |             传入数组的y长度             |
+| ｘ       |         需要标记的格子的ｘ坐标          |
+| ｙ       |         需要标记的格子的ｙ坐标          |
+
+| Value                     | 说明                                                     |
+| ------------------------- | -------------------------------------------------------- |
+| **myCBList                | 返回翻开格子后的棋盘                                     |
+| NULL                      | 所有雷都已被标记且标记的格子内全部含有雷（忽略错误处理） |
+| **myCBList，printf("...") | 输出“该格子已被标记”并返回原棋盘                         |
 
