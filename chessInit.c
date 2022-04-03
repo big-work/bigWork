@@ -53,7 +53,7 @@ Chessboard** createChessboard(int x, int y, int MineNum)
 
 Chessboard** markOneChess(Chessboard** myCBList, int cx, int cy, int x, int y) {
 	int winFlag = 1;
-	if (myCBList[x][y].tagOrNot = 1) {
+	if (myCBList[x][y].tagOrNot == 1) {
 		printf("%s", "指定的格子已被标记!");
 		return myCBList;
 	}
