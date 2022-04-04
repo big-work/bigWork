@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="chessInit.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="service.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chessboard.h" />
