@@ -3,13 +3,11 @@
 #include <stdlib.h>
 main() {
 	Chessboard** stu;
-	stu = createChessboard(10, 9, 90);
-	for (int i = 0; i < 8; i++) {
-		for (int t = 0; t < 9; t++) {
-			printf("%d\t", stu[i][t].flag);
-		}
-		printf("\n");
-	}
+
+	stu = createChessboard(10, 9, 70);
+	stu = makeChessboard(stu, 9, 10);
+	stu[2][3].drawOrNot = 1;
+	stu[3][4].tagOrNot = 1;
 	free(stu);
 	stu = NULL;
 	return 0;
