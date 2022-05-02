@@ -3,7 +3,7 @@
 #include <stdlib.h>
 main() {
 	Chessboard** stu;
-
+	// ²âÊÔÒ»ÏÂ
 	stu = createChessboard(10, 9, 70);
 	stu = makeChessboard(stu, 9, 10);
 	stu[2][3].drawOrNot = 1;
