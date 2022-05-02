@@ -21,6 +21,15 @@
     <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="service.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="chessprint.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+=======
+>>>>>>> 59a2af71aae0d211ec449a99189e4451297a1951
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chessboard.h">
