@@ -14,7 +14,7 @@ void ChessboardPrint(Chessboard** myCBList, int x, int y)
 		{
 			if (myCBList[x][y].drawOrNot == 1)
 			{
-				if (myCBList[x][y].tagOrNot == 1)
+				if (myCBList[x][y].tagOrNot == 1)// «∑Ò≤Â∆Ï
 				{
 					printf("#");
 				}
