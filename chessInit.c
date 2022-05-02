@@ -6,6 +6,7 @@
 //函数功能为返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
 Chessboard** createChessboard(int x, int y, int MineNum)
 {
+	//test
 	Chessboard myCB;
 	Chessboard** myCBList;
 	myCB.flag = 0;
@@ -73,16 +74,16 @@ Chessboard** markOneChess(Chessboard** myCBList, int cx, int cy, int x, int y) {
 	return myCBList;
 }
 
-Chessboard** makeChessboard(Chessboard** myCBList, int MineNum, int cx, int cy) {
+Chessboard** makeChessboard(Chessboard** myCBList, int cx, int cy) {
 	for (int x = 0; x < cx; x++)
 	{
 		for (int y = 0; y < cy; y++)
 		{
-			for (int i = -1; i < 2; i += 2)
+			for (int i = -1; i < 2; i++)
 			{
-				for (int t = -1; t < 2; t += 2)
+				for (int t = -1; t < 2; t++)
 				{
-					if (x + i >= 0 && y + t >= 0 && x + i <= cx && y + t <= cy) {
+					if (x + i >= 0 && y + t >= 0 && x + i <= cx && y + t <= cy && (i != 0 || t != 0)) {
 						if (myCBList[x + i][y + t].flag == 1)
 							myCBList[x][y].nearbyMineNum++;
 					}
