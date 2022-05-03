@@ -1,13 +1,7 @@
 #include "chessboard.h"
 void ChessboardPrint(Chessboard** myCBList, int x, int y)
 {
-	for (int i = 0; i < x; i++)
-	{
-		for (int j = 0; j < y; j++)
-		{
-			printf("¡õ");
-		}
-	 }
+	
 	for (int i = 0; i < x; i++)
 	{
 		for (int j = 0; j < y; j++)
@@ -29,7 +23,13 @@ void ChessboardPrint(Chessboard** myCBList, int x, int y)
 						printf("%d", myCBList[x][y].nearbyMineNum);
 					}
 				}
+			
+			}
+			else
+			{
+				printf("¡õ");
 			}
 		}
+		printf("\n");
 	}
 }
