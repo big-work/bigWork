@@ -1,4 +1,4 @@
-#include "chessboard.h"
+ï»¿#include "chessboard.h"
 void ChessboardPrint(Chessboard** myCBList, int x, int y)
 {
 	
@@ -6,28 +6,28 @@ void ChessboardPrint(Chessboard** myCBList, int x, int y)
 	{
 		for (int j = 0; j < y; j++)
 		{
-			if (myCBList[x][y].drawOrNot == 1)
+			if (myCBList[i][j].drawOrNot == 1)
 			{
-				if (myCBList[x][y].tagOrNot == 1)//ÊÇ·ñ²åÆì
+				if (myCBList[i][j].flag == 1)
+					{
+						printf("*");
+					}
+				else
+					{
+						printf("%d", myCBList[i][j].nearbyMineNum);
+					}
+			
+			}
+			else
+			{
+				if (myCBList[i][j].tagOrNot == 1)//æ˜¯å¦æ’æ——
 				{
 					printf("#");
 				}
 				else
 				{
-					if (myCBList[x][y].flag == 1)
-					{
-						printf("*");
-					}
-					else
-					{
-						printf("%d", myCBList[x][y].nearbyMineNum);
-					}
+					printf("â–¡");
 				}
-			
-			}
-			else
-			{
-				printf("¡õ");
 			}
 		}
 		printf("\n");
