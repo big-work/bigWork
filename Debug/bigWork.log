@@ -1,6 +1,2 @@
-﻿  chessInit.c
-  chessprint.c
-C:\Users\86159\source\repos\bigWork\chessprint.c(8,10): warning C4013: “printf”未定义；假设外部返回 int
-  main.c
-  正在生成代码...
+﻿  main.c
   bigWork.vcxproj -> C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe
