@@ -9,3 +9,4 @@ typedef struct
 
 Chessboard** createChessboard(int x, int y, int MineNum);
 Chessboard** makeChessboard(Chessboard** myCBList, int cx, int cy);
+void ChessboardPrint(Chessboard** myCBList, int x, int y);

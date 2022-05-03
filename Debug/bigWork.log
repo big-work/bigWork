@@ -1,4 +1,6 @@
-﻿  chessprint.c
-G:\bigWorkk\bigWork\chessprint.c(8,10): warning C4013: “printf”未定义；假设外部返回 int
-  LINK : 没有找到 G:\bigWorkk\bigWork\Debug\bigWork.exe 或上一个增量链接没有生成它；正在执行完全链接
-  bigWork.vcxproj -> G:\bigWorkk\bigWork\Debug\bigWork.exe
+﻿  chessInit.c
+  chessprint.c
+C:\Users\86159\source\repos\bigWork\chessprint.c(8,10): warning C4013: “printf”未定义；假设外部返回 int
+  main.c
+  正在生成代码...
+  bigWork.vcxproj -> C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe
