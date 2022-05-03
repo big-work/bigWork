@@ -34,7 +34,7 @@ int main() {
 
 
 	//  以上stu即为已经绘制好的棋盘，在此处调试Chessprint
-	ChessboardPrint(stu, 9, 10);
+	ChessboardPrint(stu, 10, 9);
 	free(stu);
 	stu = NULL;
 	return 0;
