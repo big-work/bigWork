@@ -18,17 +18,31 @@ typedef struct
 	int mineNum;
 }CBResult;
 
+// 定义静态变量
 static CBResult WINCB = { NULL, 1, 1, 1 };
 static CBResult LOSTCB = { NULL, -1, -1, -1 };
 static CBResult ERRORCB = { NULL, 0, 0, 0 };
 
+// createChessboard 返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
 CBResult createChessboard(int x, int y, int MineNum);
+
+// makeChessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
 CBResult makeChessboard(CBResult myCB);
+
+// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘并输出错误。
 CBResult drawOneChess(CBResult myCB, int x, int y);
+
+// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则返回原棋盘并输出错误。
 CBResult markOneChess(CBResult myCB, int x, int y);
 
+// ChessboardPrint 打印游戏中的棋盘
 void ChessboardPrint(CBResult myCB);
+
+// ResultPrint 打印棋盘埋雷结果
 void ResultPrint(CBResult myCB);
 
+// scanChessboard 输入棋盘交互
 CBResult scanChessboard();
+
+// getOrder 翻开/标记交互
 CBResult getOrder(CBResult myCB);
