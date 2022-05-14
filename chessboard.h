@@ -19,13 +19,13 @@ typedef struct
 	int mineNum;
 }CBResult;
 
+// 定义交互行为
 typedef struct behavior
 {
 	int drawOrMark;
 	int x;
 	int y;
 	struct behavior *next;
-	struct behavior *bef;
 }behavior;
 
 // 定义静态变量
@@ -42,10 +42,10 @@ CBResult CBCopy(CBResult myCB);
 // makeChessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
 CBResult makeChessboard(CBResult myCB);
 
-// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘并输出错误。
+// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
 CBResult drawOneChess(CBResult myCB, int x, int y);
 
-// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则返回原棋盘并输出错误。
+// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则取消标记。
 CBResult markOneChess(CBResult myCB, int x, int y);
 
 // ChessboardPrint 打印游戏中的棋盘

@@ -61,7 +61,7 @@ CBResult CBCopy(CBResult myCB)
 	return temp;
 }
 
-// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则返回原棋盘并输出错误。
+// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则取消标记。
 CBResult markOneChess(CBResult myCB, int x, int y) 
 {
 	int winFlag = 1;
@@ -107,7 +107,7 @@ CBResult makeChessboard(CBResult myCB)
 	return myCB;
 }
 
-// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘并输出错误。
+// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
 CBResult drawOneChess(CBResult myCB, int x, int y) 
 {
 	int t;

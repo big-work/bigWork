@@ -1,7 +1,7 @@
 #include "chessboard.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <Windows.h>
+#include <time.h>
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
@@ -26,6 +26,7 @@ int main()
 	CBResult temp = CBCopy(myCB);
 
 	printf("\n\nゲーム開始!\n\n\n");
+	clock_t start = clock();
 
 	// 游戏主体
 	do
@@ -36,6 +37,9 @@ int main()
 	} while (temp.CBList != NULL);
 
 	// 判定胜利或失败条件
+	clock_t end = clock();
+	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
+	printf("%.2f seconds have been spent.", consuming);
 	if (temp.mineNum == 1)
 		printf("You win!\n");
 	else
