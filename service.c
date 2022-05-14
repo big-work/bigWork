@@ -35,6 +35,12 @@ CBResult scanChessboard()
 			setbuf(stdin, NULL);
 			continue;
 		}
+		else if (mineNum < 5)
+		{
+			printf("Your mines are too few(mineNum >= 5)\n");
+			setbuf(stdin, NULL);
+			continue;
+		}
 
 		stu = createChessboard(line, column, mineNum);
 		stu = makeChessboard(stu);
