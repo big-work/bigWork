@@ -50,10 +50,22 @@ CBResult createChessboard(int x, int y, int mineNum)
 	return myCB;
 }
 
+// CBResult 拷贝一份棋盘
+CBResult CBCopy(CBResult myCB) 
+{
+	CBResult temp = createChessboard(myCB.line, myCB.column, 0);
+	for (int i = 0; i < myCB.line; i++)
+		for (int t = 0; t < myCB.column; t++)
+			temp.CBList[i][t] = myCB.CBList[i][t];
+	temp.line = myCB.line; temp.column = myCB.column;
+	return temp;
+}
+
 // markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则返回原棋盘并输出错误。
 CBResult markOneChess(CBResult myCB, int x, int y) 
 {
 	int winFlag = 1;
+	if (myCB.CBList[x][y].drawOrNot == 1) return myCB;
 	if (myCB.CBList[x][y].tagOrNot == 1) {
 		myCB.CBList[x][y].tagOrNot = 0;
 		return myCB;

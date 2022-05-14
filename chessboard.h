@@ -36,6 +36,9 @@ static CBResult ERRORCB = { NULL, 0, 0, 0 };
 // createChessboard 返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
 CBResult createChessboard(int x, int y, int MineNum);
 
+// CBResult 拷贝一份棋盘
+CBResult CBCopy(CBResult myCB);
+
 // makeChessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
 CBResult makeChessboard(CBResult myCB);
 
