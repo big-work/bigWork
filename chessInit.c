@@ -8,10 +8,11 @@ CBResult createChessboard(int x, int y, int mineNum)
 {
 	// 初始化棋格
 	Chessboard myChess = {0, 0, 0, 0};
-	Chessboard** myCBList;
+
+	if (x == 0 || y == 0) return ERRORCB;
 
 	// 申请内存以存放棋盘数据
-	myCBList = (Chessboard**)malloc(sizeof(Chessboard*) * x);
+	Chessboard** myCBList = (Chessboard**)malloc(sizeof(Chessboard*) * x);
 	if (myCBList == NULL)
 	{
 		printf("fail to malloc()!\n");
@@ -54,7 +55,7 @@ CBResult markOneChess(CBResult myCB, int x, int y)
 {
 	int winFlag = 1;
 	if (myCB.CBList[x][y].tagOrNot == 1) {
-		printf("Had marked!\n");
+		myCB.CBList[x][y].tagOrNot = 0;
 		return myCB;
 	}
 
@@ -68,7 +69,15 @@ CBResult markOneChess(CBResult myCB, int x, int y)
 			}
 		}
 
-	if (winFlag) return WINCB;
+	if (winFlag) {
+		for (int i = 0; i < myCB.line; i++) {
+			free(myCB.CBList[i]);
+			myCB.CBList[i] = NULL;
+		}
+		free(myCB.CBList);
+		myCB.CBList = NULL;
+		return WINCB;
+	};
 	return myCB;
 }
 
@@ -91,7 +100,16 @@ CBResult drawOneChess(CBResult myCB, int x, int y)
 {
 	int t;
 
-	if (myCB.CBList[x][y].flag) return LOSTCB;
+	if (myCB.CBList[x][y].flag) 
+	{
+		for (int i = 0; i < myCB.line; i++) {
+			free(myCB.CBList[i]);
+			myCB.CBList[i] = NULL;
+		}
+		free(myCB.CBList);
+		myCB.CBList = NULL;
+		return LOSTCB;
+	};
 	if (myCB.CBList[x][y].drawOrNot == 1) return myCB;
 
 	myCB.CBList[x][y].drawOrNot = 1;

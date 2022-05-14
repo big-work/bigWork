@@ -43,8 +43,15 @@ CBResult scanChessboard()
 }
 
 // getOrder 翻开/标记交互
-CBResult getOrder(CBResult myCB) 
+CBResult getOrder(CBResult myCB)
 {
+	extern behavior* bef;
+	behavior* myBH = (behavior*)malloc(sizeof(behavior));
+	if (myBH == NULL)
+	{
+		printf("fail to malloc()!\n");
+		return ERRORCB;
+	}
 	int order, x, y;
 	do
 	{
@@ -56,13 +63,16 @@ CBResult getOrder(CBResult myCB)
 			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			myCB = drawOneChess(myCB, x - 1, y - 1);
+			myBH->bef = bef; myBH->drawOrMark = 0; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
 		}
 		else if (order == 1) {
 			printf("Input two numbers to confirm the position(example: 1 1):");
 			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			myCB = markOneChess(myCB, x - 1, y - 1);
+			myBH->bef = bef; myBH->drawOrMark = 1; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
 		}
+		else { printf("error!\n"); setbuf(stdin, NULL); continue; }
 
 		break;
 	} while (1);

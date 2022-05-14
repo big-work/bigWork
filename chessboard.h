@@ -1,7 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <stdio.h>
-
+// 定义棋格
 typedef struct
 {
 	int  flag;
@@ -10,6 +10,7 @@ typedef struct
 	int  drawOrNot;
 }Chessboard;
 
+// 定义棋盘
 typedef struct
 {
 	Chessboard** CBList;
@@ -17,6 +18,15 @@ typedef struct
 	int column;
 	int mineNum;
 }CBResult;
+
+typedef struct behavior
+{
+	int drawOrMark;
+	int x;
+	int y;
+	struct behavior *next;
+	struct behavior *bef;
+}behavior;
 
 // 定义静态变量
 static CBResult WINCB = { NULL, 1, 1, 1 };
