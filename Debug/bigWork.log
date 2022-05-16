@@ -1,2 +1,3 @@
-﻿  main.c
+﻿  chessInit.c
+C:\Users\86159\source\repos\bigWork\chessInit.c(113,6): warning C4101: “t”: 未引用的局部变量
   bigWork.vcxproj -> C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe

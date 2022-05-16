@@ -7,7 +7,7 @@
 CBResult createChessboard(int x, int y, int mineNum)
 {
 	// 初始化棋格
-	Chessboard myChess = {0, 0, 0, 0};
+	Chessboard myChess = { 0, 0, 0, 0 };
 
 	if (x == 0 || y == 0) return ERRORCB;
 
@@ -51,7 +51,7 @@ CBResult createChessboard(int x, int y, int mineNum)
 }
 
 // CBResult 拷贝一份棋盘
-CBResult CBCopy(CBResult myCB) 
+CBResult CBCopy(CBResult myCB)
 {
 	CBResult temp = createChessboard(myCB.line, myCB.column, 0);
 	for (int i = 0; i < myCB.line; i++)
@@ -62,7 +62,7 @@ CBResult CBCopy(CBResult myCB)
 }
 
 // markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则取消标记。
-CBResult markOneChess(CBResult myCB, int x, int y) 
+CBResult markOneChess(CBResult myCB, int x, int y)
 {
 	int winFlag = 1;
 	if (myCB.CBList[x][y].drawOrNot == 1) return myCB;
@@ -94,7 +94,7 @@ CBResult markOneChess(CBResult myCB, int x, int y)
 }
 
 // makeChessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
-CBResult makeChessboard(CBResult myCB) 
+CBResult makeChessboard(CBResult myCB)
 {
 	// 遍历数组以计算
 	for (int x = 0; x < myCB.line; x++)
@@ -108,11 +108,11 @@ CBResult makeChessboard(CBResult myCB)
 }
 
 // drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
-CBResult drawOneChess(CBResult myCB, int x, int y) 
+CBResult drawOneChess(CBResult myCB, int x, int y)
 {
 	int t;
 
-	if (myCB.CBList[x][y].flag) 
+	if (myCB.CBList[x][y].flag)
 	{
 		for (int i = 0; i < myCB.line; i++) {
 			free(myCB.CBList[i]);
@@ -129,15 +129,9 @@ CBResult drawOneChess(CBResult myCB, int x, int y)
 	// 使用递归反馈翻开动作
 	if (myCB.CBList[x][y].nearbyMineNum == 0)
 		for (int i = -1; i < 2; i++)
-			if (i == 1 || i == -1) {
-				t = 0;
-				if (x + i >= 0 && y + t >= 0 && x + i < myCB.line && y + t < myCB.column)
-					myCB = drawOneChess(myCB, x + i, y + t);
-			}
-			else
-				for (t = -1; t < 2; t += 2)
-					if (x + i >= 0 && y + t >= 0 && x + i < myCB.line && y + t < myCB.column)
-						myCB = drawOneChess(myCB, x + i, y + t);
+			for (int t = -1; t < 2; t++)
+				if ((i != 0 || t != 0) && x + i < myCB.line && x + i > -1 && y + t < myCB.column && y + t > -1)
+					drawOneChess(myCB, x + i, y + t);
 
 	return myCB;
 }

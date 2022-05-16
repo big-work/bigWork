@@ -39,7 +39,7 @@ int main()
 	// 判定胜利或失败条件
 	clock_t end = clock();
 	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
-	printf("%.2f seconds have been spent.", consuming);
+	printf("\n%.2f seconds have been spent.\n", consuming);
 	if (temp.mineNum == 1)
 		printf("You win!\n");
 	else
