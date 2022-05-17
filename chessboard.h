@@ -28,6 +28,14 @@ typedef struct behavior
 	struct behavior *next;
 }behavior;
 
+// 定义用于存储的棋盘格式
+typedef struct
+{
+	int line;
+	int column;
+	char chessboard[20001];
+}CBstring;
+
 // 定义静态变量
 static CBResult WINCB = { NULL, 1, 1, 1 };
 static CBResult LOSTCB = { NULL, -1, -1, -1 };
