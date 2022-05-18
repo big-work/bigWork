@@ -10,7 +10,7 @@ void ChessboardPrint(Chessboard** myCBList, int x, int y)
 			{
 				if (myCBList[i][j].flag == 1)
 					{
-						printf("*");
+						printf('*');
 					}
 				else
 					{
