@@ -142,6 +142,7 @@
     <ClCompile Include="chessInit.c" />
     <ClCompile Include="chessprint.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="service.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chessboard.h" />
