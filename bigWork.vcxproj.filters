@@ -5,7 +5,12 @@
     <ClCompile Include="chessprint.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="service.c" />
+<<<<<<< HEAD
     <ClCompile Include="sql.c" />
+=======
+    <ClCompile Include="chesstrans_1.c" />
+    <ClCompile Include="scoreidicator.c" />
+>>>>>>> 1f6ae72fb8ba2f6da2868d19107f55e0ff942274
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chessboard.h" />

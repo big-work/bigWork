@@ -141,7 +141,9 @@
   <ItemGroup>
     <ClCompile Include="chessInit.c" />
     <ClCompile Include="chessprint.c" />
+    <ClCompile Include="chesstrans_1.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="scoreidicator.c" />
     <ClCompile Include="service.c" />
     <ClCompile Include="sql.c" />
   </ItemGroup>

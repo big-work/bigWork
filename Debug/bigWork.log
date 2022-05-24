@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+﻿  chessprint.c
+G:\bigWorkk\bigWork\chessprint.c(13,13): warning C4013: “printf”未定义；假设外部返回 int
+  bigWork.vcxproj -> G:\bigWorkk\bigWork\Debug\bigWork.exe
+=======
 ﻿  chessInit.c
 C:\Users\86159\source\repos\bigWork\chessInit.c(113,6): warning C4101: “t”: 未引用的局部变量
   bigWork.vcxproj -> C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe
+>>>>>>> 43716c3e88ee8b9fed5d108f47fad1410f411a50
