@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <mysql.h>
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
@@ -24,8 +25,7 @@ int main()
 	myCB = scanChessboard();
 
 	CBResult temp = CBCopy(myCB);
-
-	printf("\n\nゲーム開始!\n\n\n");
+	MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 	clock_t start = clock();
 
 	// 游戏主体

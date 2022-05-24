@@ -1,9 +1,16 @@
-<<<<<<< HEAD
-﻿  chessprint.c
-G:\bigWorkk\bigWork\chessprint.c(13,13): warning C4013: “printf”未定义；假设外部返回 int
-  bigWork.vcxproj -> G:\bigWorkk\bigWork\Debug\bigWork.exe
-=======
 ﻿  chessInit.c
 C:\Users\86159\source\repos\bigWork\chessInit.c(113,6): warning C4101: “t”: 未引用的局部变量
-  bigWork.vcxproj -> C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe
->>>>>>> 43716c3e88ee8b9fed5d108f47fad1410f411a50
+  chessprint.c
+  chesstrans_1.c
+  main.c
+  scoreidicator.c
+  service.c
+  sql.c
+C:\Users\86159\source\repos\bigWork\sql.c(12,12): warning C4101: “row”: 未引用的局部变量
+C:\Users\86159\source\repos\bigWork\sql.c(11,13): warning C4101: “res”: 未引用的局部变量
+  正在生成代码...
+sql.obj : error LNK2019: 无法解析的外部符号 _mysql_error@4，函数 _readFromMySql 中引用了该符号
+sql.obj : error LNK2019: 无法解析的外部符号 _mysql_init@4，函数 _readFromMySql 中引用了该符号
+sql.obj : error LNK2019: 无法解析的外部符号 _mysql_real_connect@32，函数 _readFromMySql 中引用了该符号
+E:\sql\mysql-8.0.27-winx64\lib\libmysql.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe : fatal error LNK1120: 3 个无法解析的外部命令

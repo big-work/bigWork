@@ -67,3 +67,6 @@ CBResult scanChessboard();
 
 // getOrder 翻开/标记交互
 CBResult getOrder(CBResult myCB);
+
+// readFromMySql 从MySql读取棋盘
+CBResult readFromMySql();

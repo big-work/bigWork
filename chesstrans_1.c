@@ -14,7 +14,7 @@ typedef struct
 CBstring ChessTrans_ResToStr(CBResult myCB)
 {
     int a = 0, b = 0, c = 0;
-    CBstring CBstr;
+    CBstring CBstr = {0, 0, ""};
     for (int i = 0; i < myCB.line; i++)
     {
         for (int j = 0; j < 2 * myCB.column; j+=2)//存一次有两个字符
@@ -31,7 +31,7 @@ CBstring ChessTrans_ResToStr(CBResult myCB)
 CBResult ChessTrans_StrToRes(CBstring CBstr)
 {
     char a , b;
-    CBResult myCB_1;
+    CBResult myCB_1 = createChessboard(CBstr.line, CBstr.column, 0);
     for (int i = 0; i < CBstr.line; i++)
     {
         for (int j = 0; j < 2 * CBstr.column; j += 2)//存一次有两个字符

@@ -268,5 +268,19 @@ create table minesweeper
 create unique index minesweeper_ID_uindex
     on minesweeper (ID);
 
+
+create table User
+(
+    UserID   int auto_increment,
+    username varchar(200) not null,
+    password varchar(200) not null,
+    constraint User_pk
+        primary key (UserID)
+);
+
+create unique index User_UserID_uindex
+    on User (UserID);
+
+
 ```
 
