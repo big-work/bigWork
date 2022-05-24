@@ -238,3 +238,35 @@ typedef struct
 每个棋格由两个数字数字组成，分别为是否该格子埋雷和周边雷数，例如某个格子埋有雷且周边有3个雷，则表示为13，如果不埋雷且周边无雷则表示为00
 
 将一个棋盘所有的棋格从左到右从上到下依次排列。例如：011001000000000101010000......
+
+## 第十三个星期
+
+### 大的要来了！！！
+
+
+
+#### 1. mysql数据库建立
+
+在华为云ECS云服务器上提前购买服务器并安装mysql，在云服务器上创建bigWork数据库，并在数据库中建立表格 minesweeper；
+
+```mysql
+create database bigWork;
+use bigWork;
+create table minesweeper
+(
+    ID         int auto_increment,
+    name       varchar(100) default 'anonymous_chessboard' not null,
+    `lines`    int                                         not null,
+    columns    int                                         not null,
+    chessboard TEXT(20001)                              not null,
+    mines      int                                         not null,
+    best_score int          default 0                      not null,
+    constraint minesweeper_pk
+        primary key (ID)
+);
+
+create unique index minesweeper_ID_uindex
+    on minesweeper (ID);
+
+```
+
