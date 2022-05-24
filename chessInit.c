@@ -110,8 +110,6 @@ CBResult makeChessboard(CBResult myCB)
 // drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
 CBResult drawOneChess(CBResult myCB, int x, int y)
 {
-	int t;
-
 	if (myCB.CBList[x][y].flag)
 	{
 		for (int i = 0; i < myCB.line; i++) {

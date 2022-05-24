@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\86159\source\repos\bigWork\</FILEPATH>
+      <FILENAME>chesstrans_1.c</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>6262</DEFECTCODE>
+    <DESCRIPTION>函数使用了堆栈的“20056”个字节: 超过了 /analyze:stacksize '16384'。 请考虑将某些数据移到堆中。</DESCRIPTION>
+    <FUNCTION>ChessTrans_ResToStr</FUNCTION>
+    <DECORATED>ChessTrans_ResToStr</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\86159\source\repos\bigWork\</FILEPATH>
+      <FILENAME>chesstrans_1.c</FILENAME>
+      <LINE>31</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>6262</DEFECTCODE>
+    <DESCRIPTION>函数使用了堆栈的“20052”个字节: 超过了 /analyze:stacksize '16384'。 请考虑将某些数据移到堆中。</DESCRIPTION>
+    <FUNCTION>ChessTrans_StrToRes</FUNCTION>
+    <DECORATED>ChessTrans_StrToRes</DECORATED>
+    <FUNCLINE>31</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
