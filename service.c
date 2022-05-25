@@ -87,3 +87,65 @@ CBResult getOrder(CBResult myCB)
 	} while (1);
 	return myCB;
 }
+
+CBResult makeOneCBResult() {
+	int line, column, mineNum = 0;
+	CBResult stu = ERRORCB;
+
+	do
+	{
+		printf("Input the line of the chessboard:\n");
+		if (scanf("%d", &line) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		fflush(stdin);
+
+		printf("Input the column of the chessboard:\n");
+		if (scanf("%d", &column) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		fflush(stdin);
+
+		printf("Input thr num of mines:\n");
+		if (scanf("%d", &mineNum) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		fflush(stdin);
+
+		if (line < 5 || column < 5)
+		{
+			printf("Your chessboard is too small(line > 5 && column > 5)\n");
+			setbuf(stdin, NULL);
+			continue;
+		}
+		else if (mineNum > (line * column - 10))
+		{
+			printf("Your mines are too many(mineNum <= line * column - 10)\n");
+			setbuf(stdin, NULL);
+			continue;
+		}
+		else if (mineNum < 5)
+		{
+			printf("Your mines are too few(mineNum >= 5)\n");
+			setbuf(stdin, NULL);
+			continue;
+		}
+
+		stu = createChessboard(line, column, 0);
+	} while (stu.CBList == NULL);
+	int x, y;
+	do
+	{
+		printf("This is your chessboard.\n");
+		ResultPrint(stu);
+		printf("You can tag %d mines.\n", mineNum);
+		printf("Input two numbers to confirm the position(example: 1 1)(If the position has been tagged, it would be untagged.):");
+		if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		if (stu.CBList[x - 1][y - 1].flag== 0) {
+			stu.CBList[x - 1][y - 1].flag++;
+			mineNum--;
+		}
+		else {
+			stu.CBList[x - 1][y - 1].flag--;
+			mineNum++;
+		}
+	} while (mineNum != 0);
+	printf("This is your chessboard.\n");
+	ResultPrint(stu);
+	makeChessboard(stu);
+	return stu;
+}

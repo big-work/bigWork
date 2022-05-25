@@ -76,3 +76,7 @@ void LoginUser();
 
 // makeOneCBResult dly“ª∑›∆Â≈Ã
 CBResult makeOneCBResult();
+
+CBResult ChessTrans_StrToRes(CBstring CBstr);
+
+CBstring ChessTrans_ResToStr(CBResult myCB);

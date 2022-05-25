@@ -26,8 +26,8 @@ int main()
 	}
 	bef = head;
 	pre = head;
-	myCB = scanChessboard();
-
+	//myCB = scanChessboard();
+	myCB = makeOneCBResult();
 	CBResult temp = CBCopy(myCB);
 	MessageBoxA(NULL, "¥²©`¥àé_Ê¼!", "É¨À×", MB_OK);
 	clock_t start = clock();
@@ -61,21 +61,25 @@ int main()
 	if (order == 1)
 	{
 		temp = CBCopy(myCB);
-		while (head->next != NULL)
+		behavior* temp_bh = head;
+		behavior* temp_bh_1;
+		while (temp_bh->next != NULL)
 		{
-			printf("drawOrMark: %d\tx: %d\ty: %d\n", head->next->drawOrMark, head->next->x, head->next->y);
-			if (head->next->drawOrMark == 0)
-				temp = drawOneChess(temp, head->next->x, head->next->y);
+			printf("drawOrMark: %d\tx: %d\ty: %d\n", temp_bh->next->drawOrMark, temp_bh->next->x, temp_bh->next->y);
+			if (temp_bh->next->drawOrMark == 0)
+				temp = drawOneChess(temp, temp_bh->next->x, temp_bh->next->y);
 			else
-				temp = markOneChess(temp, head->next->x, head->next->y);
-			if (temp.CBList != NULL) ChessboardPrint(temp); else { printf("End.\n"); ResultPrint(myCB); };
+				temp = markOneChess(temp, temp_bh->next->x, temp_bh->next->y);
+			if (temp.CBList != NULL) ChessboardPrint(temp); else { printf("End.\n"); ResultPrint(myCB); free(temp_bh); temp_bh = NULL; break; };
 			getchar();
 			printf("\n\n");
-			head = head->next;
+			temp_bh_1 = temp_bh->next;
+			free(temp_bh);
+			temp_bh = temp_bh_1;
 		}
 	}
 
-	// ÊÍ·ÅÄÚ´æ
+
 	for (int i = 0; i < myCB.line; i++) {
 		free(myCB.CBList[i]);
 		myCB.CBList[i] = NULL;

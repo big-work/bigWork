@@ -30,35 +30,10 @@ MYSQL open_db() {
 	return mysql;
 }
 
-CBResult readFromMySql()
-{
-	MYSQL_RES* res;
-	MYSQL_ROW row;
-
-	MYSQL mysql = open_db();
-	if (&mysql == NULL) return ERRORCB;
-
-	char* username = "kaori";
-	char* password = "888456";
-
-	char sqlStr[1000] = "";
-	sprintf(sqlStr, "insert into User (username, password) values ('%s','%s')", username, password);
-	printf("%s\n", sqlStr);
-	mysql_query(&mysql, sqlStr);
-	/*res = mysql_store_result(&mysql);
-	row = mysql_fetch_row(res);
-	printf("%s  %s\n", row[0], row[1]);*/
-
-	mysql_close(&mysql);
-	mysql_library_end();
-
-	return ERRORCB;
-}
-
 void RegisterUser() {
 	MYSQL mysql = open_db();
 	MYSQL_RES* res;
-	MYSQL_ROW row;
+	//MYSQL_ROW row;
 	if (&mysql == NULL) return;
 	char username[100];
 	char password[100];
@@ -81,7 +56,7 @@ void RegisterUser() {
 		sprintf(sqlStr, "select username from User where username = '%s'", username);
 		mysql_query(&mysql, sqlStr);
 		res = mysql_store_result(&mysql);
-		int lengths = mysql_num_rows(res);
+		long long lengths = mysql_num_rows(res);
 		mysql_free_result(res);
 		if (lengths) {
 			printf("Your username has been registered!\n");
@@ -149,7 +124,7 @@ void LoginUser() {
 		sprintf(sqlStr, "select username, password from User where username = '%s'", username);
 		mysql_query(&mysql, sqlStr);
 		res = mysql_store_result(&mysql);
-		int lengths = mysql_num_rows(res);
+		long long lengths = mysql_num_rows(res);
 		mysql_free_result(res);
 		if (lengths == 0) {
 			printf("Your username has not been registered!\n");
