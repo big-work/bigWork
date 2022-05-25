@@ -1,5 +1,0 @@
-﻿sql.obj : error LNK2019: 无法解析的外部符号 _mysql_error@4，函数 _readFromMySql 中引用了该符号
-sql.obj : error LNK2019: 无法解析的外部符号 _mysql_init@4，函数 _readFromMySql 中引用了该符号
-sql.obj : error LNK2019: 无法解析的外部符号 _mysql_real_connect@32，函数 _readFromMySql 中引用了该符号
-E:\sql\mysql-8.0.27-winx64\lib\libmysql.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
-C:\Users\86159\source\repos\bigWork\Debug\bigWork.exe : fatal error LNK1120: 3 个无法解析的外部命令

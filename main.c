@@ -8,10 +8,14 @@
 
 behavior* pre;
 behavior* bef;
+char user_token[100] = "";
 
 // 毫无技术含量和新意的扫雷
 int main()
 {
+	RegisterUser();
+	LoginUser();
+	printf("%s\n", user_token);
 	// 声明初始变量
 	CBResult myCB;
 	behavior* head = (behavior*)malloc(sizeof(behavior));
