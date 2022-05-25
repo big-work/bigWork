@@ -1,20 +1,11 @@
 #include "chessboard.h"
 
-/*CBResult
-Chessboard **CBList;
-int line;
-int column;
-int mineNum;*/
-typedef struct
-{
-    int line;
-    int column;
-    char chessboard[20001];
-}Chessboard_1;
 CBstring ChessTrans_ResToStr(CBResult myCB)
 {
     int a = 0, b = 0, c = 0;
-    CBstring CBstr = {0, 0, ""};
+    char* str = (char*)malloc(sizeof(char) * 20001);
+    str = "";
+    CBstring CBstr = {0, 0, str};
     for (int i = 0; i < myCB.line; i++)
     {
         for (int j = 0; j < 2 * myCB.column; j+=2)//存一次有两个字符

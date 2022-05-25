@@ -33,7 +33,7 @@ typedef struct
 {
 	int line;
 	int column;
-	char chessboard[20001];
+	char* chessboard;
 }CBstring;
 
 // 定义静态变量
@@ -68,11 +68,11 @@ CBResult scanChessboard();
 // getOrder 翻开/标记交互
 CBResult getOrder(CBResult myCB);
 
-// readFromMySql 从MySql读取棋盘
-CBResult readFromMySql();
-
 // ReisterUser 用户注册
 void RegisterUser();
 
 // LoginUser 用户登录
 void LoginUser();
+
+// makeOneCBResult dly一份棋盘
+CBResult makeOneCBResult();
