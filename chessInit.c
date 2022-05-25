@@ -120,7 +120,9 @@ CBResult drawOneChess(CBResult myCB, int x, int y)
 		myCB.CBList = NULL;
 		return LOSTCB;
 	};
-	if (myCB.CBList[x][y].drawOrNot == 1) return myCB;
+	if (myCB.CBList[x][y].drawOrNot == 1) {
+		return ERRORCB;
+	}
 
 	myCB.CBList[x][y].drawOrNot = 1;
 

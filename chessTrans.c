@@ -38,8 +38,7 @@ CBResult ChessTrans_StrToRes(CBstring CBstr)
         {
             a = CBstr.chessboard[(i * myCB_1.line + j)];//第一个
             b = CBstr.chessboard[(i * myCB_1.line + j + 1)];//第二个数（字符）
-            myCB_1.CBList[i][j].flag = (int)a;
-            myCB_1.CBList[i][j].nearbyMineNum = (int)b;
+
         }
     }
     return myCB_1;

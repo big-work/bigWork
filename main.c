@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <mysql.h>
+#include <mysql.h>
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
@@ -30,9 +30,7 @@ int main()
 
 	CBResult temp = CBCopy(myCB);
 	MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
-	extern clock_t start;
-	start = clock();
-	//计时开始
+	clock_t start = clock();
 
 	// 游戏主体
 	do
@@ -43,9 +41,7 @@ int main()
 	} while (temp.CBList != NULL);
 
 	// 判定胜利或失败条件
-	extern clock_t end;
-	end = clock();
-	//计时结束
+	clock_t end = clock();
 	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
 	printf("\n%.2f seconds have been spent.\n", consuming);
 	if (temp.mineNum == 1)
