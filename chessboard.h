@@ -70,3 +70,9 @@ CBResult getOrder(CBResult myCB);
 
 // readFromMySql 从MySql读取棋盘
 CBResult readFromMySql();
+
+// ReisterUser 用户注册
+void RegisterUser();
+
+// LoginUser 用户登录
+void LoginUser();
