@@ -161,3 +161,13 @@ void LoginUser() {
 	mysql_library_end();
 	return;
 }
+
+CBFromMysql readFromMysql() {
+
+}
+
+void uploadMysql(CBstring CBStr, int score, int mineNum) {
+	if (strcmp(user_token, "") == 0) {
+		printf("Please login at first!\n");
+	}
+}

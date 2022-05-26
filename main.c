@@ -13,9 +13,6 @@ char user_token[100] = "";
 // 毫无技术含量和新意的扫雷
 int main()
 {
-	RegisterUser();
-	LoginUser();
-	printf("%s\n", user_token);
 	// 声明初始变量
 	CBResult myCB;
 	behavior* head = (behavior*)malloc(sizeof(behavior));
@@ -26,8 +23,11 @@ int main()
 	}
 	bef = head;
 	pre = head;
-	//myCB = scanChessboard();
-	myCB = makeOneCBResult();
+	myCB = scanChessboard();
+	//myCB = makeOneCBResult();
+	CBstring CBStr = ChessTrans_ResToStr(myCB);
+	saveCB(CBStr);
+	return;
 	CBResult temp = CBCopy(myCB);
 	MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 	clock_t start = clock();
@@ -79,6 +79,13 @@ int main()
 		}
 	}
 
+	// 保存棋盘
+	//CBstring CBStr;
+	printf("Do you want to save your chessboard?(1/0)");
+	if (scanf("%d", &order) != 0, order == 1) {
+		CBStr = ChessTrans_ResToStr(myCB);
+		saveCB(CBStr);
+	};
 
 	for (int i = 0; i < myCB.line; i++) {
 		free(myCB.CBList[i]);
@@ -86,6 +93,8 @@ int main()
 	}
 	free(myCB.CBList);
 	myCB.CBList = NULL;
+	free(CBStr.chessboard);
+	CBStr.chessboard = NULL;
 
 	return 0;
 }

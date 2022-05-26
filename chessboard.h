@@ -36,10 +36,23 @@ typedef struct
 	char* chessboard;
 }CBstring;
 
+typedef struct
+{
+	int ID;
+	char* name;
+	int lines;
+	int columns;
+	char* chessboard;
+	int mines;
+	int bestScore;
+	char* bester;
+}CBFromMysql;
+
 // 定义静态变量
 static CBResult WINCB = { NULL, 1, 1, 1 };
 static CBResult LOSTCB = { NULL, -1, -1, -1 };
 static CBResult ERRORCB = { NULL, 0, 0, 0 };
+static CBstring ERRORCS = { 0, 0, NULL };
 
 // createChessboard 返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
 CBResult createChessboard(int x, int y, int MineNum);
@@ -80,3 +93,11 @@ CBResult makeOneCBResult();
 CBResult ChessTrans_StrToRes(CBstring CBstr);
 
 CBstring ChessTrans_ResToStr(CBResult myCB);
+
+void saveCB(CBstring CBStr);
+
+CBstring readCB();
+
+CBFromMysql readFromMysql();
+
+void uploadMysql(CBstring CBStr, int score, int mineNum);
