@@ -8,7 +8,7 @@
 
 behavior* pre;
 behavior* bef;
-char user_token[100] = "";
+extern char user_token[100] = "";
 
 // 毫无技术含量和新意的扫雷
 int main()
@@ -25,9 +25,6 @@ int main()
 	pre = head;
 	myCB = scanChessboard();
 	//myCB = makeOneCBResult();
-	CBstring CBStr = ChessTrans_ResToStr(myCB);
-	saveCB(CBStr);
-	return;
 	CBResult temp = CBCopy(myCB);
 	MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 	clock_t start = clock();
@@ -80,7 +77,7 @@ int main()
 	}
 
 	// 保存棋盘
-	//CBstring CBStr;
+	CBstring CBStr;
 	printf("Do you want to save your chessboard?(1/0)");
 	if (scanf("%d", &order) != 0, order == 1) {
 		CBStr = ChessTrans_ResToStr(myCB);
@@ -91,6 +88,7 @@ int main()
 		free(myCB.CBList[i]);
 		myCB.CBList[i] = NULL;
 	}
+
 	free(myCB.CBList);
 	myCB.CBList = NULL;
 	free(CBStr.chessboard);

@@ -42,11 +42,8 @@ CBstring readCB() {
 	char name[200] = "";
 	char file_str[200];
 	CBstring CBStr;
-	char* str = (char*)malloc(sizeof(char) * 20005);
 	char* chessboard = (char*)malloc(sizeof(char) * 20001);
-	if (str == NULL) { printf("fail to malloc()!\n"); return; }
 	if (chessboard == NULL) { printf("fail to malloc()!\n"); return; }
-	str[0] = '\0';
 	chessboard[0] = '\0';
 
 	do {
@@ -64,35 +61,14 @@ CBstring readCB() {
 		}
 		break;
 	} while (1);
-
+	int line, column;
 	FILE* file = fopen(file_str, "r");
 	if (file == NULL) { printf("error!\n"); setbuf(stdin, NULL); return ERRORCS; };
-	fscanf(file, "%s", str);
-	char* b = strchr(str, '-');
-	char* p = strrchr(str, '-');
-	char* temp = (char*)malloc(sizeof(char) * 20005);
-	if (temp == NULL) { printf("fail to malloc()!\n"); return; }
-	temp[0] = '\0';
+	fscanf(file, "%d-%d-%s",&line, &column, chessboard);
 
-	strcpy(temp, str);
-	char line_str[3], column_str[3];
-	temp[(int)(b - str)] = '\0';
-	strcpy(line_str, temp);
-
-	strcpy(temp, str);
-	temp[(int)(p - str)] = '\0';
-	strcpy(column_str, temp + (b - str) + 1);
-
-	strcpy(temp, str);
-	strcpy(chessboard, temp + (p - str) + 1);
-
-	CBStr.line = atoi(line_str);
-	CBStr.column = atoi(column_str);
+	CBStr.line = line;
+	CBStr.column = column;
 	CBStr.chessboard = chessboard;
 
-	free(str);
-	free(temp);
-	str = NULL;
-	temp = NULL;
 	return CBStr;
 }

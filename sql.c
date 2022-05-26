@@ -167,6 +167,7 @@ CBFromMysql readFromMysql() {
 }
 
 void uploadMysql(CBstring CBStr, int score, int mineNum) {
+	extern char user_token[100];
 	if (strcmp(user_token, "") == 0) {
 		printf("Please login at first!\n");
 	}
