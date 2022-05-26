@@ -25,7 +25,7 @@ typedef struct behavior
 	int drawOrMark;
 	int x;
 	int y;
-	struct behavior *next;
+	struct behavior* next;
 }behavior;
 
 // 定义用于存储的棋盘格式
@@ -53,42 +53,43 @@ static CBResult WINCB = { NULL, 1, 1, 1 };
 static CBResult LOSTCB = { NULL, -1, -1, -1 };
 static CBResult ERRORCB = { NULL, 0, 0, 0 };
 static CBstring ERRORCS = { 0, 0, NULL };
+static CBFromMysql ERRORMS = { 0, NULL, 0, 0, NULL, 0, 0, NULL };
 
-// createChessboard 返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
-CBResult createChessboard(int x, int y, int MineNum);
+// create_chessboard 返回一个埋好雷的二维数组（可以先不计算nearbyMineNum，默认为0）
+CBResult create_chessboard(int x, int y, int MineNum);
 
-// CBResult 拷贝一份棋盘
-CBResult CBCopy(CBResult myCB);
+// CB_copy 拷贝一份棋盘
+CBResult CB_copy(CBResult myCB);
 
-// makeChessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
-CBResult makeChessboard(CBResult myCB);
+// make_chessboard 返回一个埋好雷并算好周边雷数的二维数组(计算每个格子的nearbyMineNum)
+CBResult make_chessboard(CBResult myCB);
 
-// drawOneChess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
-CBResult drawOneChess(CBResult myCB, int x, int y);
+// draw_one_chess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
+CBResult draw_one_chess(CBResult myCB, int x, int y);
 
-// markOneChess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则取消标记。
-CBResult markOneChess(CBResult myCB, int x, int y);
+// mark_one_chess 标记指定坐标的格子为红旗，如果此时所有雷都已被标记且标记的格子内全部含有雷，直接返回NULL，如果指定的格子已被标记，则取消标记。
+CBResult mark_one_chess(CBResult myCB, int x, int y);
 
-// ChessboardPrint 打印游戏中的棋盘
-void ChessboardPrint(CBResult myCB);
+// chessboard_print 打印游戏中的棋盘
+void chessboard_print(CBResult myCB);
 
-// ResultPrint 打印棋盘埋雷结果
-void ResultPrint(CBResult myCB);
+// result_print 打印棋盘埋雷结果
+void result_print(CBResult myCB);
 
-// scanChessboard 输入棋盘交互
-CBResult scanChessboard();
+// scan_chessboard 输入棋盘交互
+CBResult scan_chessboard();
 
-// getOrder 翻开/标记交互
-CBResult getOrder(CBResult myCB);
+// get_order 翻开/标记交互
+CBResult get_order(CBResult myCB);
 
-// ReisterUser 用户注册
-void RegisterUser();
+// reister_user 用户注册
+void register_user();
 
-// LoginUser 用户登录
-void LoginUser();
+// login_user 用户登录
+void login_user();
 
-// makeOneCBResult dly一份棋盘
-CBResult makeOneCBResult();
+// make_one_CBResult dly一份棋盘
+CBResult make_one_CBResult();
 
 CBResult ChessTrans_StrToRes(CBstring CBstr);
 
@@ -98,6 +99,10 @@ void saveCB(CBstring CBStr);
 
 CBstring readCB();
 
-CBFromMysql readFromMysql();
+CBFromMysql read_from_mysql();
 
-void uploadMysql(CBstring CBStr, int score, int mineNum);
+void upload_mysql(CBstring CBStr, int score, int mineNum);
+
+void make_rand_game();
+
+void make_appointed_game();

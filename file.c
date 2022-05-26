@@ -43,7 +43,7 @@ CBstring readCB() {
 	char file_str[200];
 	CBstring CBStr;
 	char* chessboard = (char*)malloc(sizeof(char) * 20001);
-	if (chessboard == NULL) { printf("fail to malloc()!\n"); return; }
+	if (chessboard == NULL) { printf("fail to malloc()!\n"); return ERRORCS; }
 	chessboard[0] = '\0';
 
 	do {

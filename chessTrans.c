@@ -21,16 +21,16 @@ CBstring ChessTrans_ResToStr(CBResult myCB)
 	return CBstr;
 }
 
-CBResult ChessTrans_StrToRes(CBstring CBstr)
+CBResult ChessTrans_StrToRes(CBstring CBStr)
 {
 	char a, b;
-	CBResult myCB = createChessboard(CBstr.line, CBstr.column, 0);
-	for (int i = 0; i < CBstr.line; i++)
+	CBResult myCB = create_chessboard(CBStr.line, CBStr.column, 0);
+	for (int i = 0; i < CBStr.line; i++)
 	{
-		for (int j = 0; j < CBstr.column; j++)//存一次有两个字符
+		for (int j = 0; j < CBStr.column; j++)//存一次有两个字符
 		{
-			a = CBstr.chessboard[(i * myCB.line + j) * 2];//第一个
-			b = CBstr.chessboard[(i * myCB.line + j) * 2 + 1];//第二个数（字符）
+			a = CBStr.chessboard[(i * myCB.line + j) * 2];//第一个
+			b = CBStr.chessboard[(i * myCB.line + j) * 2 + 1];//第二个数（字符）
 			myCB.CBList[i][j].flag = (int)a - 48;
 			myCB.CBList[i][j].nearbyMineNum = (int)b - 48;
 		}

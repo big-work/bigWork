@@ -1,7 +1,7 @@
 ﻿#include "chessboard.h"
 
-// ChessboardPrint 打印游戏中的棋盘
-void ChessboardPrint(CBResult myCB)
+// chessboard_print 打印游戏中的棋盘
+void chessboard_print(CBResult myCB)
 {
 	for (int i = 0; i < myCB.line; i++)
 	{
@@ -17,8 +17,8 @@ void ChessboardPrint(CBResult myCB)
 	}
 }
 
-// ResultPrint 打印棋盘埋雷结果
-void ResultPrint(CBResult myCB)
+// result_print 打印棋盘埋雷结果
+void result_print(CBResult myCB)
 {
 	for (int i = 0; i < myCB.line; i++)
 	{

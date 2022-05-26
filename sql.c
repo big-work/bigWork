@@ -30,7 +30,7 @@ MYSQL open_db() {
 	return mysql;
 }
 
-void RegisterUser() {
+void register_user() {
 	MYSQL mysql = open_db();
 	MYSQL_RES* res;
 	//MYSQL_ROW row;
@@ -45,6 +45,7 @@ void RegisterUser() {
 		setbuf(stdin, NULL);
 		if (strlen(username) > 17) {
 			printf("Your length of username is too large.\n");
+			continue;
 		}
 		else if (strcmp(username, "0") == 0) {
 			printf("You cancel registering.\n");
@@ -100,7 +101,7 @@ void RegisterUser() {
 	return;
 }
 
-void LoginUser() {
+void login_user() {
 	MYSQL mysql = open_db();
 	MYSQL_RES* res;
 	MYSQL_ROW row;
@@ -115,6 +116,7 @@ void LoginUser() {
 		setbuf(stdin, NULL);
 		if (strlen(username) > 17) {
 			printf("Your length of username is too large.\n");
+			continue;
 		}
 		else if (strcmp(username, "0") == 0) {
 			printf("You cancel logining.\n");
@@ -128,7 +130,7 @@ void LoginUser() {
 		mysql_free_result(res);
 		if (lengths == 0) {
 			printf("Your username has not been registered!\n");
-			break;
+			continue;
 		}
 		else {
 			row = mysql_fetch_row(res);
@@ -162,13 +164,156 @@ void LoginUser() {
 	return;
 }
 
-CBFromMysql readFromMysql() {
-
-}
-
-void uploadMysql(CBstring CBStr, int score, int mineNum) {
+CBFromMysql read_from_mysql() {
+	CBFromMysql mysql_myCB;
 	extern char user_token[100];
 	if (strcmp(user_token, "") == 0) {
 		printf("Please login at first!\n");
+		return ERRORMS;
 	}
+	MYSQL mysql = open_db();
+	MYSQL_RES* res;
+	MYSQL_ROW row;
+	char* sqlStr = (char*)malloc(sizeof(char) * 20501);
+	if (sqlStr == NULL)
+	{
+		printf("fail to malloc()!\n");
+		return ERRORMS;
+	}
+	sqlStr[0] = '\0';
+	strcpy(sqlStr, "select * from minesweeper");
+	mysql_query(&mysql, sqlStr);
+	res = mysql_store_result(&mysql);
+	long long pageNum = mysql_num_rows(res) / 10 + 1;
+	long long pageNow = 1;
+	long long temp = 0;
+	char order[3];
+	while (1) {
+		printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s | %-20s |\n", "ID", "name", "line", "column", "mineNum", "record", "record-holder");
+		while ((row = mysql_fetch_row(res)) != NULL) {
+			printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s | %-20s |\n", row[0], row[1], row[2], row[3], row[5], row[6], row[7]);
+			temp++;
+			if (temp % 9 == 0) break;
+		};
+		printf("Page %lld\t totally %lld pages. Do you want to change page?(Y/N):\n", (temp) / 10 + 1, pageNum);
+		scanf("%s", &order);
+		setbuf(stdin, NULL);
+		if (strcmp(order, "Y") == 0 || strcmp(order, "y") == 0) {
+			printf("Input the page you chosed:\n");
+			while (1) {
+				if (scanf("%lld", &pageNow) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+				if (pageNow > 0 && pageNow <= pageNum) {
+					mysql_data_seek(res, (pageNow - 1) * 10);
+				}
+				else {
+					printf("The page is too large/too small.\n");
+					continue;
+				}
+				break;
+			}
+		}
+		else
+			break;
+	}
+
+	mysql_free_result(res);
+	int ID;
+	while (1) {
+		printf("Input the ID of the chessboard which you want to choose:\n");
+		if (scanf("%d", &ID) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		sprintf(sqlStr, "select * from minesweeper where ID = %d", ID);
+		mysql_query(&mysql, sqlStr);
+		res = mysql_store_result(&mysql);
+		long long length = mysql_num_rows(res);
+
+		if (length == 0) {
+			printf("There is no this ID!\n");
+			mysql_free_result(res);
+			continue;
+		}
+
+		/*char* temp_str = (char*)malloc(sizeof(char) * 20001);
+		temp_str[0] = '\0';
+		strcpy(temp_str, row[4]);*/
+
+		row = mysql_fetch_row(res);
+		mysql_myCB.ID = atoi(row[0]);
+		mysql_myCB.name = row[1];
+		mysql_myCB.lines = atoi(row[2]);
+		mysql_myCB.columns = atoi(row[3]);
+		mysql_myCB.chessboard = row[4];
+		mysql_myCB.mines = atoi(row[5]);
+		mysql_myCB.bestScore = atoi(row[6]);
+		mysql_myCB.bester = row[7];
+		break;
+	}
+	mysql_free_result(res);
+
+	return mysql_myCB;
+}
+
+void upload_mysql(CBstring CBStr, int score, int mineNum) {
+	extern char user_token[100];
+	if (strcmp(user_token, "") == 0) {
+		printf("Please login at first!\n");
+		return;
+	}
+	int line = CBStr.line;
+	int column = CBStr.column;
+	char* chessboard = (char*)malloc(sizeof(char) * 20001);
+	if (chessboard == NULL)
+	{
+		printf("fail to malloc()!\n");
+		return;
+	}
+	chessboard[0] = '\0';
+	strcpy(chessboard, CBStr.chessboard);
+
+	MYSQL mysql = open_db();
+	MYSQL_RES* res;
+	char* sqlStr = (char*)malloc(sizeof(char) * 20501);
+	if (sqlStr == NULL)
+	{
+		printf("fail to malloc()!\n");
+		return;
+	}
+	sqlStr[0] = '\0';
+	char name[100];
+	while (1) {
+		printf("Input the name of your chessboard(Input 0 to exit):\n");
+		scanf("%s", name);
+		setbuf(stdin, NULL);
+		if (strlen(name) > 17) {
+			printf("The length of name is too large.\n");
+			continue;
+		}
+		else if (strcmp(name, "0") == 0) {
+			printf("You cancel uploading.\n");
+			break;
+		}
+
+		sprintf(sqlStr, "select name from minesweeper where name = '%s'", name);
+		mysql_query(&mysql, sqlStr);
+		res = mysql_store_result(&mysql);
+		long long lengths = mysql_num_rows(res);
+		mysql_free_result(res);
+		if (lengths != 0) {
+			printf("The name has been registered!\n");
+			continue;
+		}
+		break;
+	}
+
+	sprintf(sqlStr, "insert into minesweeper (name, `lines`, columns, chessboard, mines, best_score, bester) values ('%s',%d,%d,'%s',%d,%d,'%s')",
+		name, line, column, chessboard, mineNum, score, user_token);
+	if (mysql_query(&mysql, sqlStr) == 0) {
+		printf("Upload successfully!\n");
+	}
+	else {
+		printf("Error connecting to database:%s\n", mysql_error(&mysql));
+	};
+
+	mysql_close(&mysql);
+	mysql_library_end();
+	return;
 }
