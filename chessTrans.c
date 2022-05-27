@@ -33,6 +33,7 @@ CBResult ChessTrans_StrToRes(CBstring CBStr)
 			b = CBStr.chessboard[(i * myCB.line + j) * 2 + 1];//第二个数（字符）
 			myCB.CBList[i][j].flag = (int)a - 48;
 			myCB.CBList[i][j].nearbyMineNum = (int)b - 48;
+			if (myCB.CBList[i][j].flag == 1) myCB.mineNum++;
 		}
 	}
 	return myCB;

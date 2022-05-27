@@ -14,33 +14,33 @@ CBResult scan_chessboard()
 
 	do
 	{
-		printf("Input the line of the chessboard:\n");
+		printf("输入棋盘的行数：\n");
 		if (scanf("%d", &line) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		printf("Input the column of the chessboard:\n");
+		printf("输入棋盘的列数：\n");
 		if (scanf("%d", &column) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		printf("Input thr num of mines:\n");
+		printf("输入棋盘的总雷数：\n");
 		if (scanf("%d", &mineNum) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
 		if (line < 5 || column < 5)
 		{
-			printf("Your chessboard is too small(line > 5 && column > 5)\n");
+			printf("你的棋盘太小辣（行数和列数应该大于等于5）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
 		else if (mineNum > (line * column - 10))
 		{
-			printf("Your mines are too many(mineNum <= line * column - 10)\n");
+			printf("你的棋盘的埋雷数超过了限制（雷数 <= 行数 * 列数 - 10）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
 		else if (mineNum < 5)
 		{
-			printf("Your mines are too few(mineNum >= 5)\n");
+			printf("你的棋盘的埋雷数过少（埋雷数 >= 5）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
@@ -64,11 +64,11 @@ CBResult get_order(CBResult myCB)
 	int order, x, y;
 	do
 	{
-		printf("Input 0 to draw a chequer, 1 to mark a mine.\nInput instruction:\n");
+		printf("输入0以翻开一个格子，输入1以标记一个未翻开的格子。\n请输入：\n");
 		if (scanf("%d", &order) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 
 		if (order == 0) {
-			printf("Input two numbers to confirm the position(example: 1 1):");
+			printf("输入两个数字代表位置（example: 1 1）:");
 			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			CBResult temp = draw_one_chess(myCB, x - 1, y - 1);
@@ -78,11 +78,14 @@ CBResult get_order(CBResult myCB)
 			}
 		}
 		else if (order == 1) {
-			printf("Input two numbers to confirm the position(example: 1 1):");
+			printf("输入两个数字代表位置（example: 1 1）:");
 			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-			myCB = mark_one_chess(myCB, x - 1, y - 1);
-			myBH->drawOrMark = 1; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
+			CBResult temp = mark_one_chess(myCB, x - 1, y - 1);
+			if (temp.column != 0) {
+				myCB = temp;
+				myBH->drawOrMark = 1; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
+			}
 		}
 		else { printf("error!\n"); setbuf(stdin, NULL); continue; }
 
@@ -97,47 +100,49 @@ CBResult make_one_CBResult() {
 
 	do
 	{
-		printf("Input the line of the chessboard:\n");
+		printf("输入棋盘的行数：\n");
 		if (scanf("%d", &line) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		printf("Input the column of the chessboard:\n");
+		printf("输入棋盘的列数：\n");
 		if (scanf("%d", &column) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		printf("Input thr num of mines:\n");
+		printf("输入棋盘的总雷数：\n");
 		if (scanf("%d", &mineNum) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
 		if (line < 5 || column < 5)
 		{
-			printf("Your chessboard is too small(line > 5 && column > 5)\n");
+			printf("你的棋盘太小辣（行数和列数应该大于等于5）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
 		else if (mineNum > (line * column - 10))
 		{
-			printf("Your mines are too many(mineNum <= line * column - 10)\n");
+			printf("你的棋盘的埋雷数超过了限制（雷数 <= 行数 * 列数 - 10）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
 		else if (mineNum < 5)
 		{
-			printf("Your mines are too few(mineNum >= 5)\n");
+			printf("你的棋盘的埋雷数过少（埋雷数 >= 5）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
 
 		stu = create_chessboard(line, column, 0);
+		stu.mineNum = mineNum;
 	} while (stu.CBList == NULL);
 	int x, y;
 	do
 	{
-		printf("This is your chessboard.\n");
+		printf("这是你的棋盘：\n");
 		result_print(stu);
-		printf("You can tag %d mines.\n", mineNum);
-		printf("Input two numbers to confirm the position(example: 1 1)(If the position has been tagged, it would be untagged.):");
+		printf("你还可以埋下 %d 颗雷。\n", mineNum);
+		printf("输入两个数字代表位置（example: 1 1）：（如果该位置已埋雷，则会收回该格子的雷）");
 		if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		if (x > stu.line || x < 1 || y > stu.column || y < 1) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		if (stu.CBList[x - 1][y - 1].flag == 0) {
 			stu.CBList[x - 1][y - 1].flag++;
 			mineNum--;
@@ -147,7 +152,7 @@ CBResult make_one_CBResult() {
 			mineNum++;
 		}
 	} while (mineNum != 0);
-	printf("This is your chessboard.\n");
+	printf("这是你的棋盘：\n");
 	result_print(stu);
 	make_chessboard(stu);
 	return stu;
@@ -165,13 +170,13 @@ void make_rand_game() {
 	bef = head;
 	myCB = scan_chessboard();
 	CBResult temp = CB_copy(myCB);
-	MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
+	MessageBoxA(NULL, "ゲーム開始!", "掃海", MB_OK);
 	clock_t start = clock();
 
 	// 游戏主体
 	do
 	{
-		printf("This is your chessboard.\n");
+		printf("这是你的棋盘：\n");
 		chessboard_print(temp);
 		temp = get_order(temp);
 	} while (temp.CBList != NULL);
@@ -179,18 +184,24 @@ void make_rand_game() {
 	// 判定胜利或失败条件
 	clock_t end = clock();
 	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
-	printf("\n%.2f seconds have been spent.\n", consuming);
-	if (temp.mineNum == 1)
-		printf("You win!\n");
+	char str[50] = "";
+	
+	if (temp.mineNum == 1){
+		sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+		MessageBoxA(NULL, str, "掃海", MB_OK);
+	}
 	else
-		printf("You lost!\n");
+	{
+		sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+		MessageBoxA(NULL, str, "掃海", MB_OK);
+	}
 
 	// 输出棋盘
 	result_print(myCB);
 
 	// 复盘
 	int order;
-	printf("Do you want to Re-plate? (Input 1 to accept.)");
+	printf("你需要复盘吗？（输入1以复盘）");
 	if (scanf("%d", &order) == 0) order = 0;
 	setbuf(stdin, NULL);
 	printf("\n");
@@ -217,11 +228,14 @@ void make_rand_game() {
 
 	// 保存棋盘
 	CBstring CBStr;
-	printf("Do you want to save your chessboard?(1/0)");
+	printf("你需要保存棋盘吗？(1/0)");
 	if (scanf("%d", &order) != 0, order == 1) {
 		CBStr = ChessTrans_ResToStr(myCB);
 		saveCB(CBStr);
-		upload_mysql(CBStr, 0, myCB.mineNum);
+		printf("是否将该棋盘上传到互联网？(1/0)");
+		if (scanf("%d", &order) != 0, order == 1) {
+			upload_mysql(CBStr, 0, myCB.mineNum);
+		}
 		free(CBStr.chessboard);
 		CBStr.chessboard = NULL;
 	};
@@ -264,7 +278,7 @@ void make_appointed_game() {
 			// 游戏主体
 			do
 			{
-				printf("This is your chessboard.\n");
+				printf("这是你的棋盘：\n");
 				chessboard_print(temp);
 				temp = get_order(temp);
 			} while (temp.CBList != NULL);
@@ -272,18 +286,24 @@ void make_appointed_game() {
 			// 判定胜利或失败条件
 			clock_t end = clock();
 			double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
-			printf("\n%.2f seconds have been spent.\n", consuming);
-			if (temp.mineNum == 1)
-				printf("You win!\n");
+			char str[50] = "";
+
+			if (temp.mineNum == 1) {
+				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+				MessageBoxA(NULL, str, "掃海", MB_OK);
+			}
 			else
-				printf("You lost!\n");
+			{
+				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+				MessageBoxA(NULL, str, "掃海", MB_OK);
+			}
 
 			// 输出棋盘
 			result_print(myCB);
 
 			// 复盘
 			int order;
-			printf("Do you want to Re-plate? (Input 1 to accept.)");
+			printf("你需要复盘吗？（输入1以复盘）");
 			if (scanf("%d", &order) == 0) order = 0;
 			setbuf(stdin, NULL);
 			printf("\n");
@@ -338,7 +358,7 @@ void make_appointed_game() {
 			// 游戏主体
 			do
 			{
-				printf("This is your chessboard.\n");
+				printf("这是你的棋盘：\n");
 				chessboard_print(temp);
 				temp = get_order(temp);
 			} while (temp.CBList != NULL);
@@ -346,18 +366,24 @@ void make_appointed_game() {
 			// 判定胜利或失败条件
 			clock_t end = clock();
 			double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
-			printf("\n%.2f seconds have been spent.\n", consuming);
-			if (temp.mineNum == 1)
-				printf("You win!\n");
+			char str[50] = "";
+
+			if (temp.mineNum == 1) {
+				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+				MessageBoxA(NULL, str, "掃海", MB_OK);
+			}
 			else
-				printf("You lost!\n");
+			{
+				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+				MessageBoxA(NULL, str, "掃海", MB_OK);
+			}
 
 			// 输出棋盘
 			result_print(myCB);
 
 			// 复盘
 			int order;
-			printf("Do you want to Re-plate? (Input 1 to accept.)");
+			printf("你需要复盘吗？（输入1以复盘）");
 			if (scanf("%d", &order) == 0) order = 0;
 			setbuf(stdin, NULL);
 			printf("\n");
@@ -383,7 +409,7 @@ void make_appointed_game() {
 			}
 
 			// 保存棋盘
-			printf("Do you want to save your chessboard?(1/0)");
+			printf("你需要保存棋盘吗？(1/0)");
 			if (scanf("%d", &order) != 0, order == 1) {
 				saveCB(CBStr);
 			};
@@ -406,3 +432,16 @@ void make_appointed_game() {
 		break;
 	}
 };
+
+void make_one_chessboard() {
+	CBResult myCB = make_one_CBResult();
+	CBstring CBStr = ChessTrans_ResToStr(myCB);
+	saveCB(CBStr);
+	int gm_order;
+	printf("是否上传到互联网：（输入1以上传）\n");
+	if (scanf("%d", &gm_order) == 0) { printf("error!\n"); setbuf(stdin, NULL); return; };
+	if (gm_order == 1) {
+		upload_mysql(CBStr, 0, myCB.mineNum);
+	}
+	return;
+}

@@ -65,7 +65,7 @@ CBResult CB_copy(CBResult myCB)
 CBResult mark_one_chess(CBResult myCB, int x, int y)
 {
 	int winFlag = 1;
-	if (myCB.CBList[x][y].drawOrNot == 1) return myCB;
+	if (myCB.CBList[x][y].drawOrNot == 1) return ERRORCB;
 	if (myCB.CBList[x][y].tagOrNot == 1) {
 		myCB.CBList[x][y].tagOrNot = 0;
 		return myCB;

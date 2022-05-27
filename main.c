@@ -14,9 +14,10 @@ int main()
 {
 	user_token[0] = '\0';
 	int order;
-	printf("欢迎使用红星牌扫雷系统：\n");
+	
 	while (1) {
-		printf("1. 登录\n2. 注册\n3. 随机棋盘游玩\n4. 读取棋盘游玩\n");
+		printf("欢迎使用红星牌扫雷系统：\n");
+		printf("1. 登录\n2. 注册\n3. 随机棋盘游玩\n4. 读取棋盘游玩\n5. 自定义棋盘\n");
 		printf("输入标号以选择行动：\n");
 		if (scanf("%d", &order) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		switch (order)
@@ -38,6 +39,9 @@ int main()
 		}
 		case 4:
 			make_appointed_game();
+			break;
+		case 5:
+			make_one_chessboard();
 			break;
 		default:
 			printf("请输入有效的数字！\n");

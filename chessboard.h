@@ -91,18 +91,29 @@ void login_user();
 // make_one_CBResult dly一份棋盘
 CBResult make_one_CBResult();
 
+// ChessTrans_StrToRes 将棋盘从CBString格式转化为CBResult
 CBResult ChessTrans_StrToRes(CBstring CBstr);
 
+// ChessTrans_ResToStf 将棋盘从CBResult格式转化为CBString
 CBstring ChessTrans_ResToStr(CBResult myCB);
 
+// saveCB 在本地存储棋盘
 void saveCB(CBstring CBStr);
 
+// readCB 从本地读取棋盘
 CBstring readCB();
 
+// read_from_mysql 从mysql数据库读取棋盘
 CBFromMysql read_from_mysql();
 
+// upload_mysql 上传棋盘到mysql数据库
 void upload_mysql(CBstring CBStr, int score, int mineNum);
 
+// make_rand_game 生成随机棋盘并开始游戏
 void make_rand_game();
 
+// make_appointed_game 读取指定棋盘并开始游戏
 void make_appointed_game();
+
+// make_one_chessboard 自定义棋盘以上传至mysql数据库或本地
+void make_one_chessboard();

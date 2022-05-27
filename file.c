@@ -16,15 +16,15 @@ void saveCB(CBstring CBStr) {
 	char file_str[200];
 
 	do {
-		printf("Input the name of your chessboard:\n");
+		printf("输入你想要保存的棋盘的名字：\n");
 		if (scanf("%s", name) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		sprintf(file_str, "./output/%s.txt", name);
 		if (strlen(name) > 16) {
-			printf("Your chessboard's name is too long.\n");
+			printf("名字长度超过了限制（小于等于16个字符长度）！\n");
 			setbuf(stdin, NULL); continue;
 		}
 		else if (access(file_str, 0) != -1) {
-			printf("Your output file has have a file with this name.\n");
+			printf("在你的output目录下存在重名文件，请重新命名！\n");
 			setbuf(stdin, NULL); continue;
 		}
 		break;
@@ -33,7 +33,7 @@ void saveCB(CBstring CBStr) {
 	FILE* file = fopen(file_str, "w");
 	fputs(str, file);
 	fclose(file);
-	printf("Your chessbaord has been saved.\n");
+	printf("棋盘已成功保存，前往output目录查看详细。\n");
 	free(str);
 	return;
 }
@@ -47,16 +47,16 @@ CBstring readCB() {
 	chessboard[0] = '\0';
 
 	do {
-		printf("Input the name of your chessboard which is in the output file(Input 0 to exit):\n");
+		printf("输入output目录下的棋盘名（输入0以返回）:\n");
 		scanf("%s", name);
 		if (strcmp(name, "0") == 0) { return ERRORCS; }
 		else if (strlen(name) > 16) {
-			printf("Your chessboard's name is too long.\n");
+			printf("名字长度超过了限制（小于等于16个字符长度）！\n");
 			setbuf(stdin, NULL); continue;
 		}
 		sprintf(file_str, "./output/%s.txt", name);
 		if (access(file_str, 0) == -1) {
-			printf("There is no file with the name.\n");
+			printf("在你的output目录不存在该文件！\n");
 			setbuf(stdin, NULL); continue;
 		}
 		break;
