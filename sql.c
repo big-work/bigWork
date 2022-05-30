@@ -348,11 +348,11 @@ void log_off() {
 	extern char user_token[100];
 	if (user_token[0] == '\0') { return; };
 	MYSQL mysql = open_db();
-	MYSQL_RES* res;
-	MYSQL_ROW row;
 	char sqlStr[200] = "";
 
 	sprintf(sqlStr, "update User set loginOrNot = 0 where username = '%s'", user_token);
 	mysql_query(&mysql, sqlStr);
+	strcpy(user_token, "");
+	delete_token();
 	return;
 }

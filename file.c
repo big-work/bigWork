@@ -1,6 +1,7 @@
 #include "chessboard.h"
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <io.h>
 #pragma warning (disable : 4996)
 #pragma warning (disable : 6031)
@@ -64,11 +65,56 @@ CBstring readCB() {
 	int line, column;
 	FILE* file = fopen(file_str, "r");
 	if (file == NULL) { printf("error!\n"); setbuf(stdin, NULL); return ERRORCS; };
-	fscanf(file, "%d-%d-%s",&line, &column, chessboard);
+	fscanf(file, "%d-%d-%s", &line, &column, chessboard);
+	fclose(file);
 
 	CBStr.line = line;
 	CBStr.column = column;
 	CBStr.chessboard = chessboard;
 
 	return CBStr;
+}
+
+void get_simplified_token() {
+	extern char user_token[100];
+	char username[100] = "";
+	char simplified_token[100] = "";
+	char* file_str = "./simplified_token/token.txt";
+	FILE* file = fopen(file_str, "r");
+	clock_t now = clock();
+	int time_login;
+	if (file == NULL) { return; };
+	fscanf(file, "%d-%s", &time_login, &username);
+	if (((double)now - (double)time_login) / CLOCKS_PER_SEC > 3600) {
+		strcpy(user_token, username);
+		log_off();
+		fclose(file);
+		return;
+	};
+	sprintf(simplified_token, "%d-%s", time_login, username);
+	strcpy(user_token, username);
+	fclose(file);
+	file = fopen(file_str, "w");
+	fprintf(file, "%s", simplified_token);
+	fclose(file);
+	return;
+}
+
+void write_token() {
+	extern char user_token[100];
+	char simplified_token[100] = "";
+	char* file_str = "./simplified_token/token.txt";
+	FILE* file = fopen(file_str, "w");
+	if (file == NULL) { printf("error\n"); return; };
+	clock_t now = clock();
+	sprintf(simplified_token, "%.0f-%s", (double)now, user_token);
+	fprintf(file, "%s", simplified_token);
+	fclose(file);
+	return;
+}
+
+void delete_token() {
+	char* file_str = "./simplified_token/token.txt";
+	remove(file_str);
+	return;
 }

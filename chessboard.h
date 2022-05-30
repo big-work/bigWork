@@ -123,3 +123,9 @@ int score(double consuming, behavior* head, CBResult temp);
 void update_score(int ID, int myCB_score);
 
 void log_off();
+
+void get_simplified_token();
+
+void write_token();
+
+void delete_token();

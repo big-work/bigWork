@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <mysql.h>
+
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
@@ -14,10 +15,12 @@ int main()
 {
 	user_token[0] = '\0';
 	int order;
-	atexit(log_off);
-	
+	get_simplified_token();
+	if (user_token[0] == '\0') { printf("你还没有登录，部分功能受限。\n"); }
+	else { printf("欢迎回来，%s！\n", user_token); }
 	while (1) {
-		printf("欢迎使用红星牌扫雷系统：\n");
+		printf("\n欢迎使用红星牌扫雷系统：\n\n");
+		get_simplified_token();
 		if (user_token[0] == '\0') { printf("1. 登录\n2. 注册\n3. 随机棋盘游玩\n4. 读取棋盘游玩\n5. 自定义棋盘\n6. 退出游戏\n"); }
 		else { printf("1. 取消登录\n2. 注册\n3. 随机棋盘游玩\n4. 读取棋盘游玩\n5. 自定义棋盘\n6. 退出游戏\n"); }
 		printf("输入标号以选择行动：\n");
@@ -28,6 +31,7 @@ int main()
 		{
 			if (user_token[0] == '\0') {
 				login_user();
+				write_token();
 			}
 			else {
 				log_off();
