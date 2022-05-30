@@ -10,14 +10,14 @@ const char* HOST = "124.70.51.253";
 // username: root
 // password: Luye!!@@JWH888456
 
-
+// 链接mysql数据库
 MYSQL open_db() {
 	MYSQL mysql;
 
 	mysql_init(&mysql);
 	if (!(mysql_real_connect(&mysql, HOST, "root", "Luye!!@@JWH888456", "bigWork", 3306, NULL, 0)))
 	{
-		printf("Error connecting to database:%s\n", mysql_error(&mysql));
+		printf("mysql连接失败:%s\n", mysql_error(&mysql));
 		mysql_close(&mysql);
 		mysql_library_end();
 		return mysql;
@@ -29,25 +29,25 @@ MYSQL open_db() {
 	return mysql;
 }
 
+// reister_user 用户注册
 void register_user() {
 	MYSQL mysql = open_db();
 	MYSQL_RES* res;
-	//MYSQL_ROW row;
 	if (&mysql == NULL) return;
 	char username[100];
 	char password[100];
 	char temp[100];
 	char sqlStr[1000] = "";
 	while (1) {
-		printf("Input your username(Input 0 to exit):\n");
+		printf("输入用户名(输入0以退出注册):\n");
 		scanf("%s", username);
 		setbuf(stdin, NULL);
 		if (strlen(username) > 17) {
-			printf("Your length of username is too large.\n");
+			printf("你的用户名太长了！\n");
 			continue;
 		}
 		else if (strcmp(username, "0") == 0) {
-			printf("You cancel registering.\n");
+			printf("成功取消注册\n");
 			mysql_close(&mysql);
 			mysql_library_end();
 			return;
@@ -59,28 +59,28 @@ void register_user() {
 		long long lengths = mysql_num_rows(res);
 		mysql_free_result(res);
 		if (lengths) {
-			printf("Your username has been registered!\n");
+			printf("该用户名已被注册！\n");
 			continue;
 		}
 
-		printf("Input your password(Input 0 to exit):\n");
+		printf("输入密码(输入0以退出注册):\n");
 		scanf("%s", password);
 		setbuf(stdin, NULL);
 		if (strlen(password) > 17) {
-			printf("Your length of password is too large.\n");
+			printf("你的密码太长了！\n");
 		}
 		else if (strcmp(password, "0") == 0) {
-			printf("You cancel registering.\n");
+			printf("成功取消注册.\n");
 			mysql_close(&mysql);
 			mysql_library_end();
 			return;
 		}
 
-		printf("Input the password again:\n");
+		printf("请再次输入密码:\n");
 		scanf("%s", temp);
 		setbuf(stdin, NULL);
 		if (strcmp(temp, password) != 0) {
-			printf("Your password is not coincident!\n");
+			printf("你两次输入的密码不一样！\n");
 			continue;
 		}
 		break;
@@ -88,10 +88,10 @@ void register_user() {
 
 	sprintf(sqlStr, "insert into User (username, password) values ('%s','%s')", username, password);
 	if (mysql_query(&mysql, sqlStr) == 0) {
-		printf("Register successfully!\n");
+		printf("注册成功！\n");
 	}
 	else {
-		printf("Error connecting to database:%s\n", mysql_error(&mysql));
+		printf("mysql出错:%s\n", mysql_error(&mysql));
 	};
 
 	mysql_close(&mysql);
@@ -100,6 +100,7 @@ void register_user() {
 	return;
 }
 
+// login_user 用户登录
 void login_user() {
 	MYSQL mysql = open_db();
 	MYSQL_RES* res;
@@ -110,15 +111,15 @@ void login_user() {
 	char temp[100];
 	char sqlStr[1000] = "";
 	while (1) {
-		printf("Input your username:(Input 0 to exit):\n");
+		printf("输入用户名:(输入0以退出登录):\n");
 		scanf("%s", username);
 		setbuf(stdin, NULL);
 		if (strlen(username) > 17) {
-			printf("Your length of username is too large.\n");
+			printf("你的用户名太长了！\n");
 			continue;
 		}
 		else if (strcmp(username, "0") == 0) {
-			printf("You cancel logining.\n");
+			printf("成功取消登录.\n");
 			break;
 		}
 
@@ -128,31 +129,31 @@ void login_user() {
 		long long lengths = mysql_num_rows(res);
 		mysql_free_result(res);
 		if (lengths == 0) {
-			printf("Your username has not been registered!\n");
+			printf("该用户名未被注册！\n");
 			continue;
 		}
 		else {
 			row = mysql_fetch_row(res);
 			if (atoi(row[2]) == 1) {
-				printf("The account is logining in another computer.\n");
+				printf("该账号已经在别处登录！\n");
 				break;
 			}
 			strcpy(password, row[1]);
 		}
 
-		printf("Input your password:(Input 0 to exit):\n");
+		printf("输入密码:(输入0以退出登录):\n");
 		scanf("%s", temp);
 		setbuf(stdin, NULL);
 		if (strlen(temp) > 17) {
-			printf("Your length of password is too large.\n");
+			printf("你输入的密码太长了！\n");
 		}
 		else if (strcmp(password, "0") == 0) {
-			printf("You cancel logining.\n");
+			printf("成功取消登录.\n");
 			break;
 		}
 
 		if (strcmp(temp, password) != 0) {
-			printf("Your password is wrong!\n");
+			printf("你输入了错误的密码！\n");
 			continue;
 		}
 
@@ -160,7 +161,7 @@ void login_user() {
 		sprintf(sqlStr, "update User set loginOrNot = 1 where username = '%s'", username);
 		if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
 
-		printf("Login successfully!\n");
+		printf("登录成功！\n");
 
 		break;
 	}
@@ -170,11 +171,12 @@ void login_user() {
 	return;
 }
 
+// read_from_mysql 从mysql数据库读取棋盘
 CBFromMysql read_from_mysql() {
 	CBFromMysql mysql_myCB;
 	extern char user_token[100];
 	if (strcmp(user_token, "") == 0) {
-		printf("Please login at first!\n");
+		printf("该功能需要登录才能体验！\n");
 		return ERRORMS;
 	}
 	MYSQL mysql = open_db();
@@ -195,24 +197,24 @@ CBFromMysql read_from_mysql() {
 	long long temp = 0;
 	char order[3];
 	while (1) {
-		printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s | %-20s |\n", "ID", "name", "line", "column", "mineNum", "record", "record-holder");
+		printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s | %-20s |\n", "ID", "棋盘名", "行数", "列数", "雷数", "最高分", "记录保持者");
 		while ((row = mysql_fetch_row(res)) != NULL) {
 			printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s | %-20s |\n", row[0], row[1], row[2], row[3], row[5], row[6], row[7]);
 			temp++;
 			if (temp % 9 == 0) break;
 		};
-		printf("Page %lld\t totally %lld pages. Do you want to change page?(Y/N):\n", (temp) / 10 + 1, pageNum);
+		printf("你现在在第%lld页。\t一共有%lld页. 你需要翻页吗？(Y/N):\n", (temp) / 10 + 1, pageNum);
 		scanf("%s", &order);
 		setbuf(stdin, NULL);
 		if (strcmp(order, "Y") == 0 || strcmp(order, "y") == 0) {
-			printf("Input the page you chosed:\n");
+			printf("输入页码:\n");
 			while (1) {
 				if (scanf("%lld", &pageNow) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 				if (pageNow > 0 && pageNow <= pageNum) {
 					mysql_data_seek(res, (pageNow - 1) * 10);
 				}
 				else {
-					printf("The page is too large/too small.\n");
+					printf("你输入的页码不合法！\n");
 					continue;
 				}
 				break;
@@ -225,7 +227,7 @@ CBFromMysql read_from_mysql() {
 	mysql_free_result(res);
 	int ID;
 	while (1) {
-		printf("Input the ID of the chessboard which you want to choose:\n");
+		printf("输入你想打开的棋盘的ID:\n");
 		if (scanf("%d", &ID) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		sprintf(sqlStr, "select * from minesweeper where ID = %d", ID);
 		mysql_query(&mysql, sqlStr);
@@ -233,14 +235,10 @@ CBFromMysql read_from_mysql() {
 		long long length = mysql_num_rows(res);
 
 		if (length == 0) {
-			printf("There is no this ID!\n");
+			printf("查无该ID！\n");
 			mysql_free_result(res);
 			continue;
 		}
-
-		/*char* temp_str = (char*)malloc(sizeof(char) * 20001);
-		temp_str[0] = '\0';
-		strcpy(temp_str, row[4]);*/
 
 		row = mysql_fetch_row(res);
 		mysql_myCB.ID = atoi(row[0]);
@@ -255,13 +253,16 @@ CBFromMysql read_from_mysql() {
 	}
 	mysql_free_result(res);
 
+	mysql_close(&mysql);
+	mysql_library_end();
 	return mysql_myCB;
 }
 
+// upload_mysql 上传棋盘到mysql数据库
 void upload_mysql(CBstring CBStr, int score, int mineNum) {
 	extern char user_token[100];
 	if (strcmp(user_token, "") == 0) {
-		printf("Please login at first!\n");
+		printf("该功能需要登录才能体验！\n");
 		return;
 	}
 	int line = CBStr.line;
@@ -286,15 +287,15 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 	sqlStr[0] = '\0';
 	char name[100];
 	while (1) {
-		printf("Input the name of your chessboard(Input 0 to exit):\n");
+		printf("输入棋盘名(输入0以退出):\n");
 		scanf("%s", name);
 		setbuf(stdin, NULL);
 		if (strlen(name) > 17) {
-			printf("The length of name is too large.\n");
+			printf("棋盘名太长了！\n");
 			continue;
 		}
 		else if (strcmp(name, "0") == 0) {
-			printf("You cancel uploading.\n");
+			printf("成功取消上传.\n");
 			break;
 		}
 
@@ -304,7 +305,7 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 		long long lengths = mysql_num_rows(res);
 		mysql_free_result(res);
 		if (lengths != 0) {
-			printf("The name has been registered!\n");
+			printf("该棋盘名已存在，请重新输入！\n");
 			continue;
 		}
 		break;
@@ -313,10 +314,10 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 	sprintf(sqlStr, "insert into minesweeper (name, `lines`, columns, chessboard, mines, best_score, bester) values ('%s',%d,%d,'%s',%d,%d,'%s')",
 		name, line, column, chessboard, mineNum, score, user_token);
 	if (mysql_query(&mysql, sqlStr) == 0) {
-		printf("Upload successfully!\n");
+		printf("成功上传！\n");
 	}
 	else {
-		printf("Error connecting to database:%s\n", mysql_error(&mysql));
+		printf("mysql出错:%s\n", mysql_error(&mysql));
 	};
 
 	mysql_close(&mysql);
@@ -324,6 +325,7 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 	return;
 }
 
+// update_scoer 在mysql数据库更新最高分
 void update_score(int ID, int myCB_score)
 {
 	extern char user_token[100];
@@ -341,9 +343,13 @@ void update_score(int ID, int myCB_score)
 		sprintf(sqlStr, "update minesweeper set bester = '%s', best_score = %d where ID = %d", user_token, myCB_score, ID);
 		if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
 	}
+
+	mysql_close(&mysql);
+	mysql_library_end();
 	return;
 }
 
+// log_off 退出登录
 void log_off() {
 	extern char user_token[100];
 	if (user_token[0] == '\0') { return; };
@@ -354,5 +360,8 @@ void log_off() {
 	mysql_query(&mysql, sqlStr);
 	strcpy(user_token, "");
 	delete_token();
+
+	mysql_close(&mysql);
+	mysql_library_end();
 	return;
 }

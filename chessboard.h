@@ -118,14 +118,20 @@ void make_appointed_game();
 // make_one_chessboard 自定义棋盘以上传至mysql数据库或本地
 void make_one_chessboard();
 
+// score 获取得分
 int score(double consuming, behavior* head, CBResult temp);
 
+// update_scoer 在mysql数据库更新最高分
 void update_score(int ID, int myCB_score);
 
+// log_off 退出登录
 void log_off();
 
+// get_simplified_token 获取简易token
 void get_simplified_token();
 
+// write_token 保存token
 void write_token();
 
+// delete_token 删除token
 void delete_token();

@@ -1,5 +1,6 @@
 #include "chessboard.h"
 
+// ChessTrans_ResToStr 将棋盘从CBResult格式转化为CBString
 CBstring ChessTrans_ResToStr(CBResult myCB)
 {
 	int a = 0, b = 0, c = 0;
@@ -21,6 +22,7 @@ CBstring ChessTrans_ResToStr(CBResult myCB)
 	return CBstr;
 }
 
+// ChessTrans_StrToRes 将棋盘从CBString格式转化为CBResult
 CBResult ChessTrans_StrToRes(CBstring CBStr)
 {
 	char a, b;
