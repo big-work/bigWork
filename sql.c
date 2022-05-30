@@ -24,7 +24,6 @@ MYSQL open_db() {
 	}
 
 	mysql_library_init(0, NULL, NULL);
-	printf("Connected successfully!\n");
 	mysql_set_character_set(&mysql, "utf8");
 
 	return mysql;
@@ -123,7 +122,7 @@ void login_user() {
 			break;
 		}
 
-		sprintf(sqlStr, "select username, password from User where username = '%s'", username);
+		sprintf(sqlStr, "select username, password, loginOrNot from User where username = '%s'", username);
 		mysql_query(&mysql, sqlStr);
 		res = mysql_store_result(&mysql);
 		long long lengths = mysql_num_rows(res);
@@ -134,6 +133,10 @@ void login_user() {
 		}
 		else {
 			row = mysql_fetch_row(res);
+			if (atoi(row[2]) == 1) {
+				printf("The account is logining in another computer.\n");
+				break;
+			}
 			strcpy(password, row[1]);
 		}
 
@@ -154,6 +157,9 @@ void login_user() {
 		}
 
 		strcpy(user_token, username);
+		sprintf(sqlStr, "update User set loginOrNot = 1 where username = '%s'", username);
+		if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
+
 		printf("Login successfully!\n");
 
 		break;
@@ -315,5 +321,38 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 
 	mysql_close(&mysql);
 	mysql_library_end();
+	return;
+}
+
+void update_score(int ID, int myCB_score)
+{
+	extern char user_token[100];
+	MYSQL mysql = open_db();
+	MYSQL_RES* res;
+	MYSQL_ROW row;
+	char sqlStr[200] = "";
+	sprintf(sqlStr, "select best_score from minesweeper where ID =  %d", ID);
+	mysql_query(&mysql, sqlStr);
+	res = mysql_store_result(&mysql);
+	if (mysql_num_rows(res) == 0 || strcmp(user_token, "") == 0) { printf("error\n"); return; };
+	row = mysql_fetch_row(res);
+	mysql_free_result(res);
+	if (atoi(row[0]) < myCB_score) {
+		sprintf(sqlStr, "update minesweeper set bester = '%s', best_score = %d where ID = %d", user_token, myCB_score, ID);
+		if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
+	}
+	return;
+}
+
+void log_off() {
+	extern char user_token[100];
+	if (user_token[0] == '\0') { return; };
+	MYSQL mysql = open_db();
+	MYSQL_RES* res;
+	MYSQL_ROW row;
+	char sqlStr[200] = "";
+
+	sprintf(sqlStr, "update User set loginOrNot = 0 where username = '%s'", user_token);
+	mysql_query(&mysql, sqlStr);
 	return;
 }

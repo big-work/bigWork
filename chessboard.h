@@ -117,3 +117,9 @@ void make_appointed_game();
 
 // make_one_chessboard 自定义棋盘以上传至mysql数据库或本地
 void make_one_chessboard();
+
+int score(double consuming, behavior* head, CBResult temp);
+
+void update_score(int ID, int myCB_score);
+
+void log_off();

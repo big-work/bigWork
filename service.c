@@ -185,20 +185,21 @@ void make_rand_game() {
 	clock_t end = clock();
 	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
 	char str[50] = "";
+	int myCB_score = score(consuming, head, temp);
 	
 	if (temp.mineNum == 1){
-		sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+		sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 		MessageBoxA(NULL, str, "掃海", MB_OK);
 	}
 	else
 	{
-		sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+		sprintf(str, "君は失敗した！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 		MessageBoxA(NULL, str, "掃海", MB_OK);
 	}
 
 	// 输出棋盘
 	result_print(myCB);
-
+	
 	// 复盘
 	int order;
 	printf("你需要复盘吗？（输入1以复盘）");
@@ -234,7 +235,7 @@ void make_rand_game() {
 		saveCB(CBStr);
 		printf("是否将该棋盘上传到互联网？(1/0)");
 		if (scanf("%d", &order) != 0, order == 1) {
-			upload_mysql(CBStr, 0, myCB.mineNum);
+			upload_mysql(CBStr, myCB_score, myCB.mineNum);
 		}
 		free(CBStr.chessboard);
 		CBStr.chessboard = NULL;
@@ -287,14 +288,15 @@ void make_appointed_game() {
 			clock_t end = clock();
 			double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
 			char str[50] = "";
+			int myCB_score = score(consuming, head, temp);
 
 			if (temp.mineNum == 1) {
-				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 				MessageBoxA(NULL, str, "掃海", MB_OK);
 			}
 			else
 			{
-				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 				MessageBoxA(NULL, str, "掃海", MB_OK);
 			}
 
@@ -367,14 +369,15 @@ void make_appointed_game() {
 			clock_t end = clock();
 			double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
 			char str[50] = "";
+			int myCB_score = score(consuming, head, temp);
 
 			if (temp.mineNum == 1) {
-				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\n", consuming);
+				sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 				MessageBoxA(NULL, str, "掃海", MB_OK);
 			}
 			else
 			{
-				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\n", consuming);
+				sprintf(str, "君は失敗した！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 				MessageBoxA(NULL, str, "掃海", MB_OK);
 			}
 
@@ -407,6 +410,8 @@ void make_appointed_game() {
 					temp_bh = temp_bh_1;
 				}
 			}
+
+			update_score(mysql_myCB.ID, myCB_score);
 
 			// 保存棋盘
 			printf("你需要保存棋盘吗？(1/0)");
