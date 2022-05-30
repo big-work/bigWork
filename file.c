@@ -81,7 +81,7 @@ void get_simplified_token() {
 	char simplified_token[100] = "";
 	char* file_str = "./simplified_token/token.txt";
 	FILE* file = fopen(file_str, "r");
-	clock_t now = clock();
+	clock_t now = time(NULL);
 	int time_login;
 	if (file == NULL) { return; };
 	fscanf(file, "%d-%s", &time_login, &username);
@@ -106,7 +106,7 @@ void write_token() {
 	char* file_str = "./simplified_token/token.txt";
 	FILE* file = fopen(file_str, "w");
 	if (file == NULL) { printf("error\n"); return; };
-	clock_t now = clock();
+	clock_t now = time(NULL);
 	sprintf(simplified_token, "%.0f-%s", (double)now, user_token);
 	fprintf(file, "%s", simplified_token);
 	fclose(file);
