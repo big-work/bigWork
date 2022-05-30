@@ -26,9 +26,9 @@ CBResult scan_chessboard()
 		if (scanf("%d", &mineNum) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		if (line < 5 || column < 5)
+		if (line < 5 || column < 5 || line > 80 || column > 80)
 		{
-			printf("你的棋盘太小辣（行数和列数应该大于等于5）\n");
+			printf("你的棋盘大小不符合规则（行数和列数应该大于等于5并小于等于80）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
@@ -38,9 +38,9 @@ CBResult scan_chessboard()
 			setbuf(stdin, NULL);
 			continue;
 		}
-		else if (mineNum < 5)
+		else if (mineNum < (line * column / 10))
 		{
-			printf("你的棋盘的埋雷数过少（埋雷数 >= 5）\n");
+			printf("你的棋盘的埋雷数过少（埋雷数 >= 行数 * 列数 / 10）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
@@ -112,9 +112,9 @@ CBResult make_one_CBResult() {
 		if (scanf("%d", &mineNum) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
 		fflush(stdin);
 
-		if (line < 5 || column < 5)
+		if (line < 5 || column < 5 || line > 80 || column > 80)
 		{
-			printf("你的棋盘太小辣（行数和列数应该大于等于5）\n");
+			printf("你的棋盘大小不符合规则（行数和列数应该大于等于5并小于等于80）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
@@ -124,9 +124,9 @@ CBResult make_one_CBResult() {
 			setbuf(stdin, NULL);
 			continue;
 		}
-		else if (mineNum < 5)
+		else if (mineNum < (line * column / 10))
 		{
-			printf("你的棋盘的埋雷数过少（埋雷数 >= 5）\n");
+			printf("你的棋盘的埋雷数过少（埋雷数 >= 行数 * 列数 / 10）\n");
 			setbuf(stdin, NULL);
 			continue;
 		}
