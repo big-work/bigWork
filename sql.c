@@ -1,6 +1,8 @@
 #include <winsock.h>
 #include <mysql.h>
 #include <string.h>
+#include <time.h>
+#include <conio.h>
 #include "chessboard.h"
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
@@ -63,11 +65,27 @@ void register_user() {
 			continue;
 		}
 
+		int i;
 		printf("输入密码(输入0以退出注册):\n");
-		scanf("%s", password);
+		for (i = 0; i < 16; i++) {
+			password[i] = getch();
+
+			if (password[i] == '\b' && i > 0) {
+				password[i - 1] = '\0';
+				i -= 2;
+			}
+			else if (password[i] == '\b' && i == 0) {
+				i = -1;
+			}
+			else if (password[i] == '\r') {
+				break;
+			}
+		}
+		password[i] = '\0';
 		setbuf(stdin, NULL);
 		if (strlen(password) > 17) {
 			printf("你的密码太长了！\n");
+			continue;
 		}
 		else if (strcmp(password, "0") == 0) {
 			printf("成功取消注册.\n");
@@ -75,9 +93,27 @@ void register_user() {
 			mysql_library_end();
 			return;
 		}
+		else if (strlen(password) < 8) {
+			printf("你的密码太短了！\n");
+			continue;
+		}
 
 		printf("请再次输入密码:\n");
-		scanf("%s", temp);
+		for (i = 0; i < 16; i++) {
+			temp[i] = getch();
+
+			if (temp[i] == '\b' && i > 0) {
+				temp[i - 1] = '\0';
+				i -= 2;
+			}
+			else if (temp[i] == '\b' && i == 0) {
+				i = -1;
+			}
+			else if (temp[i] == '\r') {
+				break;
+			}
+		}
+		temp[i] = '\0';
 		setbuf(stdin, NULL);
 		if (strcmp(temp, password) != 0) {
 			printf("你两次输入的密码不一样！\n");
@@ -123,7 +159,7 @@ void login_user() {
 			break;
 		}
 
-		sprintf(sqlStr, "select username, password, loginOrNot from User where username = '%s'", username);
+		sprintf(sqlStr, "select username, password, loginOrNot, logintime from User where username = '%s'", username);
 		mysql_query(&mysql, sqlStr);
 		res = mysql_store_result(&mysql);
 		long long lengths = mysql_num_rows(res);
@@ -134,20 +170,35 @@ void login_user() {
 		}
 		else {
 			row = mysql_fetch_row(res);
-			if (atoi(row[2]) == 1) {
+			time_t now = time(NULL);
+
+			if (atoi(row[2]) == 1 && ((double)now - (double)atoi(row[3])) / CLOCKS_PER_SEC <= 3600) {
 				printf("该账号已经在别处登录！\n");
 				break;
 			}
 			strcpy(password, row[1]);
 		}
 
-		printf("输入密码:(输入0以退出登录):\n");
-		scanf("%s", temp);
-		setbuf(stdin, NULL);
-		if (strlen(temp) > 17) {
-			printf("你输入的密码太长了！\n");
+		int i;
+		printf("输入密码(最多16位):(输入0以退出登录):\n");
+		for (i = 0; i < 16; i++) {
+			temp[i] = getch();
+			
+			if (temp[i] == '\b' && i > 0) {
+				temp[i - 1] = '\0';
+				i -= 2;
+			}
+			else if (temp[i] == '\b' && i == 0) {
+				i = -1;
+			}
+			else if (temp[i] == '\r') {
+				break;
+			}
 		}
-		else if (strcmp(password, "0") == 0) {
+		temp[i] = '\0';
+		
+		setbuf(stdin, NULL);
+		if (strcmp(temp, "0") == 0) {
 			printf("成功取消登录.\n");
 			break;
 		}
@@ -158,7 +209,8 @@ void login_user() {
 		}
 
 		strcpy(user_token, username);
-		sprintf(sqlStr, "update User set loginOrNot = 1 where username = '%s'", username);
+		time_t now = time(NULL);
+		sprintf(sqlStr, "update User set loginOrNot = 1, logintime = %.0f where username = '%s'", (double)now, username);
 		if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
 
 		printf("登录成功！\n");
@@ -356,10 +408,25 @@ void log_off() {
 	MYSQL mysql = open_db();
 	char sqlStr[200] = "";
 
-	sprintf(sqlStr, "update User set loginOrNot = 0 where username = '%s'", user_token);
+	sprintf(sqlStr, "update User set loginOrNot = 0, logintime = 0 where username = '%s'", user_token);
 	mysql_query(&mysql, sqlStr);
 	strcpy(user_token, "");
 	delete_token();
+
+	mysql_close(&mysql);
+	mysql_library_end();
+	return;
+}
+
+// refresh_login_time 刷新登录时间
+void refresh_login_time() {
+	extern char user_token[100];
+	MYSQL mysql = open_db();
+	char sqlStr[1000] = "";
+
+	time_t now = time(NULL);
+	sprintf(sqlStr, "update User set loginOrNot = 1, logintime = %.0f where username = '%s'", (double)now, user_token);
+	if (mysql_query(&mysql, sqlStr)) { printf("error\n"); return; };
 
 	mysql_close(&mysql);
 	mysql_library_end();

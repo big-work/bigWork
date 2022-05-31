@@ -135,3 +135,6 @@ void write_token();
 
 // delete_token É¾³ýtoken
 void delete_token();
+
+// refresh_login_time Ë¢ÐÂµÇÂ¼Ê±¼ä
+void refresh_login_time();

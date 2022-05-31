@@ -114,6 +114,7 @@ void get_simplified_token() {
 	file = fopen(file_str, "w");
 	fprintf(file, "%s", simplified_token);
 	fclose(file);
+	refresh_login_time();
 
 	return;
 }
