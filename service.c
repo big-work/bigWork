@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <mysql.h>
+#include <conio.h>
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
@@ -61,36 +62,69 @@ CBResult get_order(CBResult myCB)
 		printf("fail to malloc()!\n");
 		return ERRORCB;
 	}
-	int order, x, y;
-	do
-	{
-		printf("输入0以翻开一个格子，输入1以标记一个未翻开的格子。\n请输入：\n");
-		if (scanf("%d", &order) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+	char i = '\0';
+	int x = myCB.position_x, y = myCB.position_y;
+	printf("输入0以翻开一个格子，输入1以标记一个未翻开的格子。\n请输入：\n");
 
-		if (order == 0) {
-			printf("输入两个数字代表位置（example: 1 1）:");
-			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-			CBResult temp = draw_one_chess(myCB, x - 1, y - 1);
+	while ((i = getch()) != 0) {
+		// up
+		if (i == 72) {
+			myCB.CBList[x][y].cursorOrNot = 0;
+			x--;
+			if (x < 0) x = 0;
+			myCB.CBList[x][y].cursorOrNot = 1;
+			myCB.position_x = x;
+			myCB.position_y = y;
+			break;
+		}
+		// down
+		if (i == 80) {
+			myCB.CBList[x][y].cursorOrNot = 0;
+			x++;
+			if (x == myCB.line) x--;
+			myCB.CBList[x][y].cursorOrNot = 1;
+			myCB.position_x = x;
+			myCB.position_y = y;
+			break;
+		}
+		// left
+		if (i == 75) {
+			myCB.CBList[x][y].cursorOrNot = 0;
+			y--;
+			if (y < 0) y = 0;
+			myCB.CBList[x][y].cursorOrNot = 1;
+			myCB.position_x = x;
+			myCB.position_y = y;
+			break;
+		}
+		// right
+		if (i == 77) {
+			myCB.CBList[x][y].cursorOrNot = 0;
+			y++;
+			if (y == myCB.column) y--;
+			myCB.CBList[x][y].cursorOrNot = 1;
+			myCB.position_x = x;
+			myCB.position_y = y;
+			break;
+		}
+		if (i == '0') {
+			CBResult temp = draw_one_chess(myCB, x, y);
 			if (temp.column != 0) {
 				myCB = temp;
-				myBH->drawOrMark = 0; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
+				myBH->drawOrMark = 0; myBH->x = x; myBH->y = y; myBH->next = NULL; bef->next = myBH; bef = myBH;
 			}
+			break;
 		}
-		else if (order == 1) {
-			printf("输入两个数字代表位置（example: 1 1）:");
-			if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-			if (x < 1 || x > myCB.line || y < 1 || y > myCB.column) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-			CBResult temp = mark_one_chess(myCB, x - 1, y - 1);
+		if (i == '1') {
+			CBResult temp = mark_one_chess(myCB, x, y);
 			if (temp.column != 0) {
 				myCB = temp;
-				myBH->drawOrMark = 1; myBH->x = x - 1; myBH->y = y - 1; myBH->next = NULL; bef->next = myBH; bef = myBH;
+				myBH->drawOrMark = 1; myBH->x = x; myBH->y = y; myBH->next = NULL; bef->next = myBH; bef = myBH;
 			}
+			break;
 		}
-		else { printf("error!\n"); setbuf(stdin, NULL); continue; }
 
-		break;
-	} while (1);
+	}
 	return myCB;
 }
 
@@ -134,24 +168,72 @@ CBResult make_one_CBResult() {
 		stu = create_chessboard(line, column, 0);
 		stu.mineNum = mineNum;
 	} while (stu.CBList == NULL);
-	int x, y;
+	int x = 0, y = 0;
+	system("cls");
+	printf("这是你的棋盘：\n");
+
 	do
 	{
-		printf("这是你的棋盘：\n");
 		result_print(stu);
-		printf("你还可以埋下 %d 颗雷。\n", mineNum);
-		printf("输入两个数字代表位置（example: 1 1）：（如果该位置已埋雷，则会收回该格子的雷）");
-		if (scanf("%d%d", &x, &y) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-		if (x > stu.line || x < 1 || y > stu.column || y < 1) { printf("error!\n"); setbuf(stdin, NULL); continue; };
-		if (stu.CBList[x - 1][y - 1].flag == 0) {
-			stu.CBList[x - 1][y - 1].flag++;
-			mineNum--;
+		printf("你还可以埋下 %-4d 颗雷(输入回车以埋雷)。\n", mineNum);
+		int i;
+		while ((i = getch()) != 0) {
+			// up
+			if (i == 72) {
+				stu.CBList[x][y].cursorOrNot = 0;
+				x--;
+				if (x < 0) x = 0;
+				stu.CBList[x][y].cursorOrNot = 1;
+				stu.position_x = x;
+				stu.position_y = y;
+				break;
+			}
+			// down
+			if (i == 80) {
+				stu.CBList[x][y].cursorOrNot = 0;
+				x++;
+				if (x == stu.line) x--;
+				stu.CBList[x][y].cursorOrNot = 1;
+				stu.position_x = x;
+				stu.position_y = y;
+				break;
+			}
+			// left
+			if (i == 75) {
+				stu.CBList[x][y].cursorOrNot = 0;
+				y--;
+				if (y < 0) y = 0;
+				stu.CBList[x][y].cursorOrNot = 1;
+				stu.position_x = x;
+				stu.position_y = y;
+				break;
+			}
+			// right
+			if (i == 77) {
+				stu.CBList[x][y].cursorOrNot = 0;
+				y++;
+				if (y == stu.column) y--;
+				stu.CBList[x][y].cursorOrNot = 1;
+				stu.position_x = x;
+				stu.position_y = y;
+				break;
+			}
+
+			if (i == '\r') {
+				if (stu.CBList[x][y].flag == 0) {
+					stu.CBList[x][y].flag++;
+					mineNum--;
+				}
+				else {
+					stu.CBList[x][y].flag--;
+					mineNum++;
+				}
+				break;
+			}
 		}
-		else {
-			stu.CBList[x - 1][y - 1].flag--;
-			mineNum++;
-		}
+		
 	} while (mineNum != 0);
+	system("cls");
 	printf("这是你的棋盘：\n");
 	result_print(stu);
 	make_chessboard(stu);
@@ -172,11 +254,12 @@ void make_rand_game() {
 	CBResult temp = CB_copy(myCB);
 	MessageBoxA(NULL, "ゲーム開始!", "掃海", MB_OK);
 	clock_t start = clock();
+	system("cls");
+	printf("这是你的棋盘：\n");
 
 	// 游戏主体
 	do
 	{
-		printf("这是你的棋盘：\n");
 		chessboard_print(temp);
 		temp = get_order(temp);
 	} while (temp.CBList != NULL);
@@ -186,8 +269,8 @@ void make_rand_game() {
 	double consuming = ((double)end - (double)start) / CLOCKS_PER_SEC;
 	char str[50] = "";
 	int myCB_score = score(consuming, head, temp);
-	
-	if (temp.mineNum == 1){
+
+	if (temp.mineNum == 1) {
 		sprintf(str, "お前の勝ちだ！\n\n%.2f秒かかる\nscore : %d", consuming, myCB_score);
 		MessageBoxA(NULL, str, "掃海", MB_OK);
 	}
@@ -198,8 +281,10 @@ void make_rand_game() {
 	}
 
 	// 输出棋盘
+	system("cls");
+	myCB.position_x = -1; myCB.position_y = -1;
 	result_print(myCB);
-	
+
 	// 复盘
 	int order;
 	printf("你需要复盘吗？（输入1以复盘）");
@@ -211,14 +296,16 @@ void make_rand_game() {
 		temp = CB_copy(myCB);
 		behavior* temp_bh = head;
 		behavior* temp_bh_1;
+		temp.CBList[temp.position_x][temp.position_y].cursorOrNot = 0;
 		while (temp_bh->next != NULL)
 		{
+			system("cls");
 			printf("drawOrMark: %d\tx: %d\ty: %d\n", temp_bh->next->drawOrMark, temp_bh->next->x, temp_bh->next->y);
 			if (temp_bh->next->drawOrMark == 0)
 				temp = draw_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
 			else
 				temp = mark_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
-			if (temp.CBList != NULL) chessboard_print(temp); else { printf("End.\n"); result_print(myCB); free(temp_bh); temp_bh = NULL; break; };
+			if (temp.CBList != NULL) chessboard_print(temp); else { myCB.position_x = -1; myCB.position_y = -1; result_print(myCB); free(temp_bh); temp_bh = NULL; getchar(); break; };
 			getchar();
 			printf("\n\n");
 			temp_bh_1 = temp_bh->next;
@@ -275,11 +362,12 @@ void make_appointed_game() {
 			CBResult temp = CB_copy(myCB);
 			MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 			clock_t start = clock();
+			system("cls");
+			printf("这是你的棋盘：\n");
 
 			// 游戏主体
 			do
 			{
-				printf("这是你的棋盘：\n");
 				chessboard_print(temp);
 				temp = get_order(temp);
 			} while (temp.CBList != NULL);
@@ -301,6 +389,8 @@ void make_appointed_game() {
 			}
 
 			// 输出棋盘
+			system("cls");
+			myCB.position_x = -1; myCB.position_y = -1;
 			result_print(myCB);
 
 			// 复盘
@@ -314,14 +404,16 @@ void make_appointed_game() {
 				temp = CB_copy(myCB);
 				behavior* temp_bh = head;
 				behavior* temp_bh_1;
+				temp.CBList[temp.position_x][temp.position_y].cursorOrNot = 0;
 				while (temp_bh->next != NULL)
 				{
+					system("cls");
 					printf("drawOrMark: %d\tx: %d\ty: %d\n", temp_bh->next->drawOrMark, temp_bh->next->x, temp_bh->next->y);
 					if (temp_bh->next->drawOrMark == 0)
 						temp = draw_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
 					else
 						temp = mark_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
-					if (temp.CBList != NULL) chessboard_print(temp); else { printf("End.\n"); result_print(myCB); free(temp_bh); temp_bh = NULL; break; };
+					if (temp.CBList != NULL) chessboard_print(temp); else { myCB.position_x = -1; myCB.position_y = -1; result_print(myCB); free(temp_bh); temp_bh = NULL; getchar(); break; };
 					getchar();
 					printf("\n\n");
 					temp_bh_1 = temp_bh->next;
@@ -356,11 +448,12 @@ void make_appointed_game() {
 			CBResult temp = CB_copy(myCB);
 			MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 			clock_t start = clock();
+			system("cls");
+			printf("这是你的棋盘：\n");
 
 			// 游戏主体
 			do
 			{
-				printf("这是你的棋盘：\n");
 				chessboard_print(temp);
 				temp = get_order(temp);
 			} while (temp.CBList != NULL);
@@ -382,6 +475,8 @@ void make_appointed_game() {
 			}
 
 			// 输出棋盘
+			system("cls");
+			myCB.position_x = -1; myCB.position_y = -1;
 			result_print(myCB);
 
 			// 复盘
@@ -395,14 +490,16 @@ void make_appointed_game() {
 				temp = CB_copy(myCB);
 				behavior* temp_bh = head;
 				behavior* temp_bh_1;
+				temp.CBList[temp.position_x][temp.position_y].cursorOrNot = 0;
 				while (temp_bh->next != NULL)
 				{
+					system("cls");
 					printf("drawOrMark: %d\tx: %d\ty: %d\n", temp_bh->next->drawOrMark, temp_bh->next->x, temp_bh->next->y);
 					if (temp_bh->next->drawOrMark == 0)
 						temp = draw_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
 					else
 						temp = mark_one_chess(temp, temp_bh->next->x, temp_bh->next->y);
-					if (temp.CBList != NULL) chessboard_print(temp); else { printf("End.\n"); result_print(myCB); free(temp_bh); temp_bh = NULL; break; };
+					if (temp.CBList != NULL) chessboard_print(temp); else { myCB.position_x = -1; myCB.position_y = -1; result_print(myCB); free(temp_bh); temp_bh = NULL; getchar(); break; };
 					getchar();
 					printf("\n\n");
 					temp_bh_1 = temp_bh->next;

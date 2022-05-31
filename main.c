@@ -16,12 +16,20 @@ int main()
 	user_token[0] = '\0';
 	int order;
 
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO CursorInfo;
+	GetConsoleCursorInfo(handle, &CursorInfo);
+	CursorInfo.bVisible = 0;
+	SetConsoleCursorInfo(handle, &CursorInfo);
+
 	// 读取本地token
 	get_simplified_token();
-	if (user_token[0] == '\0') { printf("你还没有登录，部分功能受限。\n"); }
-	else { printf("欢迎回来，%s！\n", user_token); }
+	
 
 	while (1) {
+		system("cls");
+		if (user_token[0] == '\0') { printf("你还没有登录，部分功能受限。\n"); }
+		else { printf("欢迎回来，%s！\n", user_token); }
 		printf("\n欢迎使用红星牌扫雷系统：\n\n");
 
 		get_simplified_token();

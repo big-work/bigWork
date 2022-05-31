@@ -8,50 +8,53 @@ typedef struct
 	int  nearbyMineNum;
 	int  tagOrNot;
 	int  drawOrNot;
+	int  cursorOrNot;
 }Chessboard;
 
 // 定义棋盘
 typedef struct
 {
-	Chessboard** CBList;
-	int line;
-	int column;
-	int mineNum;
+	Chessboard**  CBList;
+	int           line;
+	int           column;
+	int           mineNum;
+	int           position_x;
+	int           position_y;
 }CBResult;
 
 // 定义交互行为
 typedef struct behavior
 {
-	int drawOrMark;
-	int x;
-	int y;
+	int  drawOrMark;
+	int  x;
+	int  y;
 	struct behavior* next;
 }behavior;
 
 // 定义用于存储的棋盘格式
 typedef struct
 {
-	int line;
-	int column;
-	char* chessboard;
+	int    line;
+	int    column;
+	char*  chessboard;
 }CBstring;
 
 typedef struct
 {
-	int ID;
-	char* name;
-	int lines;
-	int columns;
-	char* chessboard;
-	int mines;
-	int bestScore;
-	char* bester;
+	int    ID;
+	char*  name;
+	int    lines;
+	int    columns;
+	char*  chessboard;
+	int    mines;
+	int    bestScore;
+	char*  bester;
 }CBFromMysql;
 
 // 定义静态变量
-static CBResult WINCB = { NULL, 1, 1, 1 };
-static CBResult LOSTCB = { NULL, -1, -1, -1 };
-static CBResult ERRORCB = { NULL, 0, 0, 0 };
+static CBResult WINCB = { NULL, 1, 1, 1, 0, 0 };
+static CBResult LOSTCB = { NULL, -1, -1, -1, 0, 0 };
+static CBResult ERRORCB = { NULL, 0, 0, 0, 0, 0 };
 static CBstring ERRORCS = { 0, 0, NULL };
 static CBFromMysql ERRORMS = { 0, NULL, 0, 0, NULL, 0, 0, NULL };
 
@@ -138,3 +141,6 @@ void delete_token();
 
 // refresh_login_time 刷新登录时间
 void refresh_login_time();
+
+// gotoxy 辅助函数，刷新光标位置
+void gotoxy();

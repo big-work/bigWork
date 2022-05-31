@@ -7,7 +7,7 @@
 CBResult create_chessboard(int x, int y, int mineNum)
 {
 	// ≥ı ºªØ∆Â∏Ò
-	Chessboard myChess = { 0, 0, 0, 0 };
+	Chessboard myChess = { 0, 0, 0, 0, 0 };
 
 	if (x == 0 || y == 0) return ERRORCB;
 
@@ -45,8 +45,9 @@ CBResult create_chessboard(int x, int y, int mineNum)
 		}
 		myCBList[randNumx][randNumy].flag = 1;
 	}
+	myCBList[0][0].cursorOrNot = 1;
 
-	CBResult myCB = { myCBList, x, y, mineNum };
+	CBResult myCB = { myCBList, x, y, mineNum, 0, 0 };
 	return myCB;
 }
 
