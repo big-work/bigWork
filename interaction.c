@@ -22,6 +22,7 @@ CBResult make_one_CBResult() {
 	{
 		result_print(stu);
 		printf("你还可以埋下 %-4d 颗雷(输入回车以埋雷)。\n", mineNum);
+
 		int i;
 		while ((i = getch()) != 0) {
 			// up
@@ -68,7 +69,7 @@ CBResult make_one_CBResult() {
 				stu.position_y = y;
 				break;
 			}
-
+			// enter
 			if (i == '\r') 
 			{
 				if (stu.CBList[x][y].flag == 0) 
@@ -109,7 +110,7 @@ void make_rand_game() {
 		return;
 	}
 	bef = head;
-	head->x = 0; head->y = 0;
+	head->x = 0; head->y = 0; head->drawOrMark = 0;
 	head->bef = NULL;
 
 	myCB = scan_chessboard();
@@ -168,16 +169,21 @@ void make_appointed_game() {
 	system("cls");
 	int gm_order;
 	extern behavior* bef;
-	while (1) {
+
+	while (1) 
+	{
 		printf("请输入：\n\n1. 从本地选择棋盘并游玩\n\n2. 从互联网下载棋盘并游玩\n\n3. 返回\n");
 		if (scanf("%d", &gm_order) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+
 		switch (gm_order)
 		{
 		case 1:
 		{
 			CBstring CBStr = readCB();
+
 			CBResult myCB = ChessTrans_StrToRes(CBStr);
 			if (myCB.CBList == NULL) { printf("error\n"); return; };
+
 			behavior* head = (behavior*)malloc(sizeof(behavior));
 			if (head == NULL)
 			{
@@ -185,7 +191,7 @@ void make_appointed_game() {
 				return;
 			}
 			bef = head;
-			head->x = 0; head->y = 0;
+			head->x = 0; head->y = 0; head->drawOrMark = 0;
 			head->bef = NULL;
 
 			CBResult temp = CB_copy(myCB);
@@ -224,10 +230,13 @@ void make_appointed_game() {
 		case 2:
 		{
 			CBFromMysql mysql_myCB = read_from_mysql();
+
 			if (mysql_myCB.ID == 0) continue;
+
 			CBstring CBStr = { mysql_myCB.lines, mysql_myCB.columns, mysql_myCB.chessboard };
 			CBResult myCB = ChessTrans_StrToRes(CBStr);
 			if (myCB.CBList == NULL) { printf("error\n"); return; };
+
 			behavior* head = (behavior*)malloc(sizeof(behavior));
 			if (head == NULL)
 			{
@@ -235,8 +244,9 @@ void make_appointed_game() {
 				return;
 			}
 			bef = head;
-			head->x = 0; head->y = 0;
+			head->x = 0; head->y = 0; head->drawOrMark = 0;
 			head->bef = NULL;
+
 			CBResult temp = CB_copy(myCB);
 			MessageBoxA(NULL, "ゲーム開始!", "扫雷", MB_OK);
 			clock_t start = clock();
@@ -298,10 +308,13 @@ void make_appointed_game() {
 void make_one_chessboard() {
 	CBResult myCB = make_one_CBResult();
 	CBstring CBStr = ChessTrans_ResToStr(myCB);
+
 	saveCB(CBStr);
+
 	int gm_order;
 	printf("是否上传到互联网：（输入1以上传）\n");
 	if (scanf("%d", &gm_order) == 0) { printf("error!\n"); setbuf(stdin, NULL); return; };
+
 	if (gm_order == 1) upload_mysql(CBStr, 0, myCB.mineNum);
 	return;
 }

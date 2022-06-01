@@ -8,7 +8,7 @@
 #pragma warning(disable : 4996)
 #pragma warning(disable : 6031)
 
-// win 判定胜利或失败条件
+// win 赢麻了服务
 int win(clock_t start, behavior* head, CBResult temp) 
 {
 	clock_t end = clock();
@@ -30,7 +30,7 @@ int win(clock_t start, behavior* head, CBResult temp)
 	return myCB_score;
 }
 
-// replay 复盘
+// replay 复盘服务
 void replay(CBResult myCB, behavior* head) 
 {
 	int order;
@@ -145,7 +145,7 @@ void replay(CBResult myCB, behavior* head)
 	return;
 }
 
-// get_order 翻开/标记交互
+// get_order 获取用户指令
 CBResult get_order(CBResult myCB)
 {
 	extern behavior* bef;
@@ -220,8 +220,9 @@ CBResult get_order(CBResult myCB)
 	return myCB;
 }
 
-
-CBResult create_chessboard_service() {
+// create_chessboard_service 创建棋盘服务
+CBResult create_chessboard_service() 
+{
 	int line, column, mineNum;
 	CBResult stu = ERRORCB;
 
