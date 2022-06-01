@@ -39,15 +39,13 @@ CBResult create_chessboard(int x, int y, int mineNum)
 	{
 		randNumx = rand() % x;
 		randNumy = rand() % y;
-		if (myCBList[randNumx][randNumy].flag == 1) {
-			i--;
-			continue;
-		}
+		if (myCBList[randNumx][randNumy].flag == 1) { i--; continue; }
 		myCBList[randNumx][randNumy].flag = 1;
 	}
 	myCBList[0][0].cursorOrNot = 1;
 
 	CBResult myCB = { myCBList, x, y, mineNum, 0, 0 };
+
 	return myCB;
 }
 
@@ -55,9 +53,11 @@ CBResult create_chessboard(int x, int y, int mineNum)
 CBResult CB_copy(CBResult myCB)
 {
 	CBResult temp = create_chessboard(myCB.line, myCB.column, 0);
+
 	for (int i = 0; i < myCB.line; i++)
 		for (int t = 0; t < myCB.column; t++)
 			temp.CBList[i][t] = myCB.CBList[i][t];
+
 	temp.line = myCB.line; temp.column = myCB.column;
 	return temp;
 }
@@ -66,7 +66,9 @@ CBResult CB_copy(CBResult myCB)
 CBResult mark_one_chess(CBResult myCB, int x, int y)
 {
 	int winFlag = 1;
+
 	if (myCB.CBList[x][y].drawOrNot == 1) return ERRORCB;
+
 	if (myCB.CBList[x][y].tagOrNot == 1) {
 		myCB.CBList[x][y].tagOrNot = 0;
 		return myCB;
@@ -76,10 +78,7 @@ CBResult mark_one_chess(CBResult myCB, int x, int y)
 	for (int i = 0; i < myCB.line; i++)
 		for (int t = 0; t < myCB.column; t++) {
 			Chessboard p = myCB.CBList[i][t];
-			if (p.tagOrNot == 1 && p.flag == 0 || p.tagOrNot == 0 && p.flag == 1) {
-				winFlag = 0;
-				break;
-			}
+			if (p.tagOrNot == 1 && p.flag == 0 || p.tagOrNot == 0 && p.flag == 1) { winFlag = 0; break; }
 		}
 
 	if (winFlag) {
@@ -105,12 +104,15 @@ CBResult make_chessboard(CBResult myCB)
 					if (x + i >= 0 && y + t >= 0 && x + i < myCB.line && y + t < myCB.column && (i != 0 || t != 0))
 						if (myCB.CBList[x + i][y + t].flag == 1)
 							myCB.CBList[x][y].nearbyMineNum++;
+
 	return myCB;
 }
 
 // draw_one_chess 翻开指定坐标的格子，并自动翻开根据规则同时翻开的格子，如果该格子埋有雷，直接返回NULL，如果指定的格子已被翻开，则返回原棋盘。
 CBResult draw_one_chess(CBResult myCB, int x, int y)
 {
+	if (myCB.CBList[x][y].drawOrNot == 1 || myCB.CBList[x][y].tagOrNot == 1)return ERRORCB;
+
 	if (myCB.CBList[x][y].flag)
 	{
 		for (int i = 0; i < myCB.line; i++) {
@@ -121,9 +123,6 @@ CBResult draw_one_chess(CBResult myCB, int x, int y)
 		myCB.CBList = NULL;
 		return LOSTCB;
 	};
-	if (myCB.CBList[x][y].drawOrNot == 1 || myCB.CBList[x][y].tagOrNot == 1) {
-		return ERRORCB;
-	}
 
 	myCB.CBList[x][y].drawOrNot = 1;
 

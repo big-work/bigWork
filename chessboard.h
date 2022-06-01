@@ -1,6 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 // 定义棋格
 typedef struct
 {
@@ -25,11 +26,20 @@ typedef struct
 // 定义交互行为
 typedef struct behavior
 {
-	int  drawOrMark;
-	int  x;
-	int  y;
-	struct behavior* next;
+	int               drawOrMark;
+	int               x;
+	int               y;
+	struct behavior*  next;
+	struct behavior*  bef;
 }behavior;
+
+typedef struct CBChainTable
+{
+	CBResult              myCB;
+	struct CBChainTable*  next;
+	struct CBChainTable*  bef;
+
+}CBChainTable;
 
 // 定义用于存储的棋盘格式
 typedef struct
@@ -144,3 +154,15 @@ void refresh_login_time();
 
 // gotoxy 辅助函数，刷新光标位置
 void gotoxy(int x, int y);
+
+// create_chessboard_service 创建棋盘服务
+CBResult create_chessboard_service();
+
+// get_order 获取用户指令
+CBResult get_order(CBResult myCB);
+
+// replay 复盘服务
+void replay(CBResult myCB, behavior* head);
+
+// win 赢麻了服务
+int win(clock_t start, behavior* head, CBResult temp);

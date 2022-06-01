@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "chessboard.h"
 
-
+// gotoxy 辅助函数，刷新光标位置
 void gotoxy(int x, int y)
 {
 	COORD c;

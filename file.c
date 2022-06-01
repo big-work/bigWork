@@ -12,6 +12,7 @@ void saveCB(CBstring CBStr) {
 	int column = CBStr.column;
 	int line = CBStr.line;
 	char name[200] = "";
+	char temp_name;
 	char* str = (char*)malloc(sizeof(char) * 20005);
 	if (str == NULL) { printf("fail to malloc()!\n"); return; }
 	str[0] = '\0';
@@ -23,13 +24,20 @@ void saveCB(CBstring CBStr) {
 	// 用户交互
 	do {
 		printf("输入你想要保存的棋盘的名字：\n");
-		if (scanf("%s", name) == 0) { printf("error!\n"); setbuf(stdin, NULL); continue; };
+		setbuf(stdin, NULL);
+		for (int i = 0; i < 16; i++) 
+		{
+			if (temp_name = getchar(), temp_name == '\n') { name[i] = '\0'; setbuf(stdin, NULL); break; };
+			name[i] = temp_name;
+		}
 		sprintf(file_str, "./output/%s.txt", name);
-		if (strlen(name) > 16) {
+		if (strlen(name) > 16) 
+		{
 			printf("名字长度超过了限制（小于等于16个字符长度）！\n");
 			setbuf(stdin, NULL); continue;
 		}
-		else if (access(file_str, 0) != -1) {
+		else if (access(file_str, 0) != -1) 
+		{
 			printf("在你的output目录下存在重名文件，请重新命名！\n");
 			setbuf(stdin, NULL); continue;
 		}
@@ -50,32 +58,50 @@ CBstring readCB() {
 	// 定义初始变量
 	char name[200] = "";
 	char file_str[200];
+	char temp_name;
 	CBstring CBStr;
+
 	char* chessboard = (char*)malloc(sizeof(char) * 20001);
-	if (chessboard == NULL) { printf("fail to malloc()!\n"); return ERRORCS; }
+	if (chessboard == NULL) { 
+		printf("fail to malloc()!\n"); 
+		return ERRORCS; 
+	}
+
 	chessboard[0] = '\0';
 
 	// 用户交互
 	do {
 		printf("输入output目录下的棋盘名（输入0以返回）:\n");
-		scanf("%s", name);
+		setbuf(stdin, NULL);
+
+		for (int i = 0; i < 16; i++) {
+			if (temp_name = getchar(), temp_name == '\n') { name[i] = '\0'; setbuf(stdin, NULL); break; };
+			name[i] = temp_name;
+		}
+
 		if (strcmp(name, "0") == 0) { return ERRORCS; }
+
 		else if (strlen(name) > 16) {
 			printf("名字长度超过了限制（小于等于16个字符长度）！\n");
 			setbuf(stdin, NULL); continue;
 		}
+
 		sprintf(file_str, "./output/%s.txt", name);
+
 		if (access(file_str, 0) == -1) {
 			printf("在你的output目录不存在该文件！\n");
 			setbuf(stdin, NULL); continue;
 		}
+
 		break;
 	} while (1);
 
 	// 以"%d-%d-%s"的格式在本地读取棋盘
 	int line, column;
 	FILE* file = fopen(file_str, "r");
+
 	if (file == NULL) { printf("error!\n"); setbuf(stdin, NULL); return ERRORCS; };
+
 	fscanf(file, "%d-%d-%s", &line, &column, chessboard);
 	fclose(file);
 
@@ -100,7 +126,8 @@ void get_simplified_token() {
 
 	// 获取援用token, 如果token过期则不返回user_token, 如果未过期则刷新token
 	fscanf(file, "%d-%s", &time_login, &username);
-	if (((double)now - (double)time_login) > 3600) {
+	if (((double)now - (double)time_login) > 3600) 
+	{
 		strcpy(user_token, username);
 		log_off();
 		fclose(file);

@@ -284,8 +284,3 @@ create unique index User_UserID_uindex
 
 ```
 
-## 第十四个星期
-
-我已经......不想再战斗了
-
-反正写是写完了，估计一堆bug（）

@@ -50,6 +50,7 @@ void register_user() {
 		}
 		else if (strcmp(username, "0") == 0) {
 			printf("成功取消注册\n");
+			system("pause");
 			mysql_close(&mysql);
 			mysql_library_end();
 			return;
@@ -356,8 +357,13 @@ void upload_mysql(CBstring CBStr, int score, int mineNum) {
 	sqlStr[0] = '\0';
 	char name[100];
 	while (1) {
+		char temp_name;
 		printf("输入棋盘名(输入0以退出):\n");
-		scanf("%s", name);
+		setbuf(stdin, NULL);
+		for (int i = 0; i < 16; i++) {
+			if (temp_name = getchar(), temp_name == '\n') { name[i] = '\0'; setbuf(stdin, NULL); break; };
+			name[i] = temp_name;
+		}
 		setbuf(stdin, NULL);
 		if (strlen(name) > 17) {
 			printf("棋盘名太长了！\n");
