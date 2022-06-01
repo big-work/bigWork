@@ -121,7 +121,7 @@ CBResult draw_one_chess(CBResult myCB, int x, int y)
 		myCB.CBList = NULL;
 		return LOSTCB;
 	};
-	if (myCB.CBList[x][y].drawOrNot == 1) {
+	if (myCB.CBList[x][y].drawOrNot == 1 || myCB.CBList[x][y].tagOrNot == 1) {
 		return ERRORCB;
 	}
 

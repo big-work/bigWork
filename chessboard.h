@@ -143,4 +143,4 @@ void delete_token();
 void refresh_login_time();
 
 // gotoxy 辅助函数，刷新光标位置
-void gotoxy();
+void gotoxy(int x, int y);

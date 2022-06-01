@@ -30,10 +30,12 @@ int main()
 	SetConsoleCursorInfo(handle, &CursorInfo);
 
 	// 读取本地token
+	printf("正在读取登录状态......\n");
 	get_simplified_token();
 	
 
 	while (1) {
+		Sleep((DWORD)(1.5 * CLOCKS_PER_SEC));
 		system("cls");
 		if (user_token[0] == '\0') { printf("你还没有登录，部分功能受限。\n"); }
 		else { printf("欢迎回来，%s！\n", user_token); }
