@@ -16,6 +16,13 @@ int main()
 	user_token[0] = '\0';
 	int order;
 
+	
+
+	HWND hwnd = GetConsoleWindow();
+	if (hwnd != NULL) {
+		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+	}
+
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO CursorInfo;
 	GetConsoleCursorInfo(handle, &CursorInfo);

@@ -100,7 +100,7 @@ void get_simplified_token() {
 
 	// 获取援用token, 如果token过期则不返回user_token, 如果未过期则刷新token
 	fscanf(file, "%d-%s", &time_login, &username);
-	if (((double)now - (double)time_login) / CLOCKS_PER_SEC > 3600) {
+	if (((double)now - (double)time_login) > 3600) {
 		strcpy(user_token, username);
 		log_off();
 		fclose(file);

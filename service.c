@@ -522,6 +522,9 @@ void make_appointed_game() {
 			}
 
 			free(myCB.CBList);
+			free(mysql_myCB.name);
+			free(mysql_myCB.chessboard);
+			free(mysql_myCB.bester);
 			myCB.CBList = NULL;
 			break;
 		}

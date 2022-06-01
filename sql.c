@@ -172,7 +172,7 @@ void login_user() {
 			row = mysql_fetch_row(res);
 			time_t now = time(NULL);
 
-			if (atoi(row[2]) == 1 && ((double)now - (double)atoi(row[3])) / CLOCKS_PER_SEC <= 3600) {
+			if (atoi(row[2]) == 1 && ((double)now - (double)atoi(row[3])) <= 3600) {
 				printf("该账号已经在别处登录！\n");
 				break;
 			}
@@ -235,12 +235,26 @@ CBFromMysql read_from_mysql() {
 	MYSQL_RES* res;
 	MYSQL_ROW row;
 	char* sqlStr = (char*)malloc(sizeof(char) * 20501);
+	
 	if (sqlStr == NULL)
 	{
 		printf("fail to malloc()!\n");
 		return ERRORMS;
 	}
+
+	char* myCB_row[3];
+	
 	sqlStr[0] = '\0';
+	
+	for (int i = 0; i < 3; i++) {
+		myCB_row[i] = (char*)malloc(sizeof(char) * 20001);
+		if (myCB_row[i] == NULL)
+		{
+			printf("fail to malloc()!\n");
+			return ERRORMS;
+		}
+		myCB_row[i][0] = '\0';
+	}
 	strcpy(sqlStr, "select * from minesweeper");
 	mysql_query(&mysql, sqlStr);
 	res = mysql_store_result(&mysql);
@@ -293,14 +307,17 @@ CBFromMysql read_from_mysql() {
 		}
 
 		row = mysql_fetch_row(res);
+		strcpy(myCB_row[0], row[1]);
+		strcpy(myCB_row[1], row[4]);
+		strcpy(myCB_row[2], row[7]);
 		mysql_myCB.ID = atoi(row[0]);
-		mysql_myCB.name = row[1];
+		mysql_myCB.name = myCB_row[0];
 		mysql_myCB.lines = atoi(row[2]);
 		mysql_myCB.columns = atoi(row[3]);
-		mysql_myCB.chessboard = row[4];
+		mysql_myCB.chessboard = myCB_row[1];
 		mysql_myCB.mines = atoi(row[5]);
 		mysql_myCB.bestScore = atoi(row[6]);
-		mysql_myCB.bester = row[7];
+		mysql_myCB.bester = myCB_row[2];
 		break;
 	}
 	mysql_free_result(res);
