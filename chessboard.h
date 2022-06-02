@@ -15,7 +15,7 @@ typedef struct
 // 定义棋盘
 typedef struct
 {
-	Chessboard**  CBList;
+	Chessboard** CBList;
 	int           line;
 	int           column;
 	int           mineNum;
@@ -29,15 +29,15 @@ typedef struct behavior
 	int               drawOrMark;
 	int               x;
 	int               y;
-	struct behavior*  next;
-	struct behavior*  bef;
+	struct behavior* next;
+	struct behavior* bef;
 }behavior;
 
 typedef struct CBChainTable
 {
 	CBResult              myCB;
-	struct CBChainTable*  next;
-	struct CBChainTable*  bef;
+	struct CBChainTable* next;
+	struct CBChainTable* bef;
 
 }CBChainTable;
 
@@ -46,19 +46,19 @@ typedef struct
 {
 	int    line;
 	int    column;
-	char*  chessboard;
+	char* chessboard;
 }CBstring;
 
 typedef struct
 {
 	int    ID;
-	char*  name;
+	char* name;
 	int    lines;
 	int    columns;
-	char*  chessboard;
+	char* chessboard;
 	int    mines;
 	int    bestScore;
-	char*  bester;
+	char* bester;
 }CBFromMysql;
 
 // 定义静态变量
