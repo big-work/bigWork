@@ -42,9 +42,9 @@ void saveCB(CBstring CBStr)
             name[i] = temp_name;
         }
         sprintf(file_str, "./output/%s.txt", name);
-        if (strlen(name) > 16)
+        if (strlen(name) > 16 || strlen(name) < 3)
         {
-            printf("名字长度超过了限制（小于等于16个字符长度）！\n");
+            printf("名字长度不符合限制（小于等于16个字符长度，大于大于3个字符长度）！\n");
             setbuf(stdin, NULL);
             continue;
         }
@@ -105,10 +105,9 @@ CBstring readCB()
         {
             return ERRORCS;
         }
-
-        else if (strlen(name) > 16)
+        else if (strlen(name) > 16 || strlen(name) < 3)
         {
-            printf("名字长度超过了限制（小于等于16个字符长度）！\n");
+            printf("名字长度不符合限制（小于等于16个字符长度，大于大于3个字符长度）！\n");
             setbuf(stdin, NULL);
             continue;
         }

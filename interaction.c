@@ -186,7 +186,6 @@ void make_appointed_game()
         printf("请输入：\n\n1. 从本地选择棋盘并游玩\n\n2. 从互联网下载棋盘并游玩\n\n3. 返回\n");
         if (scanf("%d", &gm_order) == 0)
         {
-            printf("error!\n");
             setbuf(stdin, NULL);
             continue;
         }

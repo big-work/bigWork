@@ -75,6 +75,12 @@ void register_user()
             mysql_library_end();
             return;
         }
+        else if (strlen(username) < 4)
+        {
+            printf("你的用户名太短了！\n");
+            system("pause");
+            continue;
+        }
 
         sprintf(sqlStr, "select username from User where username = '%s'", username);
         mysql_query(&mysql, sqlStr);
@@ -305,7 +311,7 @@ CBFromMysql read_from_mysql()
     {
         printf("网络连接故障，无法连接数据库！\n");
         system("pause");
-        return;
+        return ERRORMS;
     }
 
     MYSQL_RES* res;
