@@ -166,3 +166,6 @@ void replay(CBResult myCB, behavior* head);
 
 // win 赢麻了服务
 int win(clock_t start, behavior* head, CBResult temp);
+
+// check_token 检查token是否伪造
+int check_token(char* username, int time_login);

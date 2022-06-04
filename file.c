@@ -163,15 +163,18 @@ void get_simplified_token()
 
     // 获取援用token, 如果token过期则不返回user_token, 如果未过期则刷新token
     fscanf(file, "%d-%s", &time_login, &username);
-    if (((double)now - (double)time_login) > 3600)
+
+    int flag = check_token(username, time_login);
+
+    if (((double)now - (double)time_login) > 3600 || flag == 0)
     {
-        strcpy(user_token, username);
+        // strcpy(user_token, username);
         fclose(file);
-        log_off();
+        // log_off();
         return;
     }
     
-    sprintf(simplified_token, "%d-%s", time_login, username);
+    sprintf(simplified_token, "%.0f-%s", (double)now, username);
     strcpy(user_token, username);
     fclose(file);
 

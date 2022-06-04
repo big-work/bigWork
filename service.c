@@ -171,7 +171,7 @@ CBResult get_order(CBResult myCB)
     }
     char i = '\0';
     int x = myCB.position_x, y = myCB.position_y;
-    printf("输入0以翻开一个格子，输入1以标记一个未翻开的格子。\n请输入：\n");
+    printf("输入回车以翻开一个格子，输入0以标记一个未翻开的格子。\n请输入：\n");
 
     while ((i = getch()) != 0)
     {
@@ -219,7 +219,7 @@ CBResult get_order(CBResult myCB)
             myCB.position_y = y;
             break;
         }
-        if (i == '0')
+        if (i == '\r')
         {
             CBResult temp = draw_one_chess(myCB, x, y);
             if (temp.column != 0)
@@ -235,7 +235,7 @@ CBResult get_order(CBResult myCB)
             }
             break;
         }
-        if (i == '1')
+        if (i == '0')
         {
             CBResult temp = mark_one_chess(myCB, x, y);
             if (temp.column != 0)

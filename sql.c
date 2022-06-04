@@ -356,16 +356,16 @@ CBFromMysql read_from_mysql()
             temp++;
             if (temp % 9 == 0) break;
         }
-        printf("你现在在第%lld页。\t一共有%lld页. 你需要翻页吗？(Y/N):\n", (temp) / 10 + 1, pageNum);
+        printf("你现在在第%lld页。\t一共有%lld页. 你需要翻页吗？(Y/N):\n", pageNow, pageNum);
 
         scanf("%s", &order);
         setbuf(stdin, NULL);
 
         if (strcmp(order, "Y") == 0 || strcmp(order, "y") == 0)
         {
-            printf("输入页码:\n");
             while (1)
             {
+                printf("输入页码:\n");
                 if (scanf("%lld", &pageNow) == 0)
                 {
                     printf("error!\n");
@@ -373,7 +373,11 @@ CBFromMysql read_from_mysql()
                     continue;
                 };
                 if (pageNow > 0 && pageNow <= pageNum)
+                {
                     mysql_data_seek(res, (pageNow - 1) * 10);
+                    temp = 0;
+                    // system("cls");
+                }
                 else
                 {
                     printf("你输入的页码不合法！\n");
@@ -644,4 +648,41 @@ void refresh_login_time()
     mysql_close(&mysql);
     mysql_library_end();
     return;
+}
+
+// check_token 检查token是否伪造
+int check_token(char* username, int time_login) {
+    MYSQL mysql = open_db();
+    MYSQL_RES* res;
+    MYSQL_ROW row;
+
+    if (mysql.db == NULL)
+    {
+        //printf("网络连接故障，无法检查登录状态！\n");
+        // system("pause");
+
+        return 0;
+    }
+
+    char sqlStr[100] = "";
+    sprintf(sqlStr, "select logintime from User where username = '%s'", username);
+
+    mysql_query(&mysql, sqlStr);
+
+    res = mysql_store_result(&mysql);
+
+    long long length = mysql_num_rows(res);
+
+    if (length != 0)
+    {
+        row = mysql_fetch_row(res);
+        if (abs(atoi(row[0]) - time_login) > 5) return 0;
+    }
+    else 
+        return 0;
+
+
+    mysql_close(&mysql);
+    mysql_library_end();
+    return 1;
 }
