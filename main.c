@@ -45,7 +45,7 @@ int main()
 
         printf("\n欢迎使用红星牌扫雷系统：\n\n");
 
-        
+
 
         if (user_token[0] == '\0')
             printf("1. 登录\n2. 注册\n3. 随机棋盘游玩\n4. 读取棋盘游玩\n5. 自定义棋盘\n6. 退出游戏\n");
@@ -65,52 +65,52 @@ int main()
         switch (order)
         {
             // 登录 or 退出登录
-            case 1:
+        case 1:
+        {
+            if (user_token[0] == '\0')
             {
-                if (user_token[0] == '\0')
-                {
-                    login_user();
-                }
-                else
-                {
-                    log_off();
-                    strcpy(user_token, "");
-                }
-                break;
+                login_user();
             }
-            // 注册
-            case 2:
+            else
             {
-                register_user();
-                break;
+                log_off();
+                strcpy(user_token, "");
             }
-            // 随机棋盘游玩
-            case 3:
-            {
-                make_rand_game();
-                break;
-            }
-            // 读取棋盘游玩
-            case 4:
-            {
-                make_appointed_game();
-                break;
-            }
-            // 自定义棋盘
-            case 5:
-            {
-                make_one_chessboard();
-                break;
-            }
-            // 退出游戏
-            case 6:
-                return 0;
-            default:
-            {
-                printf("请输入有效的数字！\n");
-                system("pause");
-                break;
-            }
+            break;
+        }
+        // 注册
+        case 2:
+        {
+            register_user();
+            break;
+        }
+        // 随机棋盘游玩
+        case 3:
+        {
+            make_rand_game();
+            break;
+        }
+        // 读取棋盘游玩
+        case 4:
+        {
+            make_appointed_game();
+            break;
+        }
+        // 自定义棋盘
+        case 5:
+        {
+            make_one_chessboard();
+            break;
+        }
+        // 退出游戏
+        case 6:
+            return 0;
+        default:
+        {
+            printf("请输入有效的数字！\n");
+            system("pause");
+            break;
+        }
         }
     }
 }

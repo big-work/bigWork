@@ -170,6 +170,7 @@ void get_simplified_token()
     {
         // strcpy(user_token, username);
         fclose(file);
+        strcpy(user_token, "");
         // log_off();
         return;
     }
