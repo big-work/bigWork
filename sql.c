@@ -109,7 +109,9 @@ void register_user()
             }
             else if (password[i] == '\b' && i == 0) i = -1;
             else if (password[i] == '\r') break;
+            else  printf("*");;
         }
+        printf("\n");
         password[i] = '\0';
         setbuf(stdin, NULL);
         if (strlen(password) > 17)
@@ -145,7 +147,9 @@ void register_user()
             }
             else if (temp[i] == '\b' && i == 0) i = -1;
             else if (temp[i] == '\r') break;
+            else  printf("*");;
         }
+        printf("\n");
 
         temp[i] = '\0';
         setbuf(stdin, NULL);
@@ -256,7 +260,9 @@ void login_user()
             }
             else if (temp[i] == '\b' && i == 0) i = -1;
             else if (temp[i] == '\r') break;
+            else  printf("*");;
         }
+        printf("\n");
         temp[i] = '\0';
 
         setbuf(stdin, NULL);
