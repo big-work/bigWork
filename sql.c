@@ -276,6 +276,7 @@ void login_user()
         if (strcmp(temp, password) != 0)
         {
             printf("ÄãÊäÈëÁË´íÎóµÄÃÜÂë£¡\n");
+            system("pause");
             continue;
         }
 

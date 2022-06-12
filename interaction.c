@@ -12,7 +12,7 @@ CBResult make_one_CBResult()
 {
     CBResult stu = create_chessboard_service();
 
-    int x = 0, y = 0, mineNum = stu.mineNum;
+    int x = 0, y = 0, mineNum = stu.mineNum, mine = stu.mineNum;
 
     stu = create_chessboard(stu.line, stu.column, 0);
 
@@ -93,6 +93,7 @@ CBResult make_one_CBResult()
 
     stu.position_x = -1;
     stu.position_y = -1;
+    stu.mineNum = mine;
 
     printf("ÕâÊÇÄãµÄÆåÅÌ£º\n");
     result_print(stu);
